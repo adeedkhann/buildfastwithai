@@ -105,7 +105,7 @@ export function ComplaintForm({
     const handleAutofill = () => {
       const mockText = isHi
         ? "गोमती नगर में मिठाई चौराहे के पास कचरे का ढेर लगा है। डब्बे ओवरफ्लो हो रहे हैं जिससे भीषण दुर्गंध आ रही है, पैदल चलने का रास्ता बंद है और आवारा पशु वहां जमा हो रहे हैं। कृपया तत्काल सफाई कराएं।"
-        : "Solid waste dump near Mithai Chauraha in Gomti Nagar. Overflowing containers causing extreme stink, blocking pedestrian pathway, and attracting stray animals. Needs urgent sanitation cleaning and department intervention.";
+        : "Solid waste dump near a residential market in New Delhi. Overflowing containers are blocking the pedestrian pathway and attracting stray animals. Needs urgent sanitation intervention.";
       const mockName = isHi ? "राकेश कुमार" : "Rakesh Kumar";
       const mockPhone = "+91 99887 76655";
       
@@ -113,7 +113,7 @@ export function ComplaintForm({
       setLocation({
         lat: 26.8532,
         lng: 80.9723,
-        area: isHi ? "गोमती नगर, लखनऊ" : "Gomti Nagar, Lucknow"
+        area: isHi ? "नई दिल्ली, भारत" : "New Delhi, India"
       });
       
       setText(mockText);
@@ -191,7 +191,7 @@ export function ComplaintForm({
     notificationSent: isHi ? "नागरिक एसएमएस सूचना प्रेषित:" : "Notification sent:",
     fileAnother: isHi ? "एक और शिकायत दर्ज करें" : "File Another Complaint",
     trackThis: isHi ? "शिकायत ट्रैक करें" : "Track This Complaint",
-    placeholderText: isHi ? "समस्या का विस्तार से वर्णन करें (जैसे, गोमती नगर मुख्य मार्ग पर 3 दिनों से स्ट्रीट लाइट खराब है...)" : "Describe the issue in detail (e.g., Streetlight broken on Main Road Gomti Nagar for 3 days...)",
+    placeholderText: isHi ? "समस्या का विस्तार से वर्णन करें (जैसे, नई दिल्ली के मुख्य मार्ग पर 3 दिनों से स्ट्रीट लाइट खराब है...)" : "Describe the issue in detail (e.g., Streetlight broken on a main road in New Delhi for 3 days...)",
     selectPriority: isHi ? "प्राथमिकता चुनें" : "Select Priority",
     priorityAuto: isHi ? "ऑटो (AI तय करेगा)" : "Auto-Detect",
     priorityNormal: isHi ? "सामान्य" : "Normal",
@@ -254,7 +254,7 @@ export function ComplaintForm({
         return data.area;
       } catch (err) {
         console.error("Geocoding fetch failed:", err);
-        return isHi ? "गोमती नगर, लखनऊ" : "Gomti Nagar, Lucknow";
+          return isHi ? "नई दिल्ली, भारत" : "New Delhi, India";
       }
     };
 
@@ -441,7 +441,7 @@ export function ComplaintForm({
           const mock = "गोमती नगर में मिठाई चौराहे के पास सड़क पर गहरे गड्ढे हो गए हैं। वाहनों को निकलने में भारी असुविधा हो रही है और दुर्घटना का खतरा बना रहता है। कृपया शीघ्र मरम्मत कराएं।";
           setText(() => (baseText ? baseText + " " + mock : mock));
         } else {
-          const mock = "Deep potholes have formed on the road near Mithai Chauraha in Gomti Nagar. Vehicles are facing severe inconvenience and there is a constant risk of accidents. Please repair it immediately.";
+          const mock = "Deep potholes have formed on a main road in Mumbai. Vehicles are facing severe inconvenience and there is a constant risk of accidents. Please repair it immediately.";
           setText(() => (baseText ? baseText + " " + mock : mock));
         }
         fallbackTimeoutRef.current = null;
@@ -547,7 +547,7 @@ export function ComplaintForm({
         departmentHi: result.departmentHi,
         latitude: location?.lat || 26.8467,
         longitude: location?.lng || 80.9462,
-        area: location?.area || "Gomti Nagar, Lucknow",
+        area: location?.area || "New Delhi, India",
         citizenId: session?.id || null,
         citizenName: name || session?.name || "Demo Citizen",
         citizenPhone: phone || session?.mobile || "+91 99999 88888",

@@ -19,8 +19,8 @@ interface LiveResolution {
 }
 
 const mockLiveResolutions: LiveResolution[] = [
-  { id: "RES-941", district: "Hazratganj, Lucknow", category: "Water Pipeline Leak", time: "12 hours ago" },
-  { id: "RES-942", district: "Gomti Nagar, Lucknow", category: "Garbage Pile Cleanup", time: "8 hours ago" },
+  { id: "RES-941", district: "Andheri, Mumbai", category: "Water Pipeline Leak", time: "12 hours ago" },
+  { id: "RES-942", district: "Dwarka, New Delhi", category: "Garbage Pile Cleanup", time: "8 hours ago" },
   { id: "RES-943", district: "Sector 15, Noida", category: "Streetlight Restoration", time: "16 hours ago" },
   { id: "RES-944", district: "Civil Lines, Prayagraj", category: "Pothole Filling", time: "4 hours ago" },
   { id: "RES-945", district: "Taj Ganj, Agra", category: "Sewage Line Fix", time: "18 hours ago" },

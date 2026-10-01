@@ -8,10 +8,7 @@ import {
   X,
   Send,
   Mic,
-  MicOff,
-  User,
   Bot as BotIcon,
-  ChevronRight,
   TrendingUp,
   MapPin,
   AlertTriangle,
@@ -27,6 +24,11 @@ import {
   FileText,
   Shield,
   Zap,
+  Construction,
+  Flame,
+  RefreshCw,
+  Search,
+  ClipboardList,
 } from "lucide-react";
 import {
   getComplaints,
@@ -50,7 +52,7 @@ interface Message {
 
 // Department directory data
 const DEPARTMENTS = [
-  { name: "Lucknow Nagar Nigam", nameHi: "लखनऊ नगर निगम", handles: "Garbage, Sanitation, Parks", handlesHi: "कचरा, स्वच्छता, पार्क", helpline: "0522-2638340" },
+  { name: "Municipal Corporation", nameHi: "नगर निगम", handles: "Garbage, Sanitation, Parks", handlesHi: "कचरा, स्वच्छता, पार्क", helpline: "Local civic helpline" },
   { name: "Jal Nigam", nameHi: "जल निगम", handles: "Water Supply, Drainage, Sewage", handlesHi: "जल आपूर्ति, नाला, सीवर", helpline: "0522-2614925" },
   { name: "Public Works Dept (PWD)", nameHi: "लोक निर्माण विभाग", handles: "Roads, Bridges, Highways", handlesHi: "सड़क, पुल, राजमार्ग", helpline: "0522-2237582" },
   { name: "UPPCL (Power Dept)", nameHi: "विद्युत विभाग (UPPCL)", handles: "Electricity, Street Lights, Transformers", handlesHi: "बिजली, स्ट्रीट लाइट, ट्रांसफार्मर", helpline: "1912" },
@@ -60,32 +62,18 @@ const DEPARTMENTS = [
   { name: "Animal Control", nameHi: "पशु नियंत्रण", handles: "Stray Animals, Cattle, Dogs", handlesHi: "आवारा पशु, गाय, कुत्ते", helpline: "0522-2627844" },
 ];
 
-// Expanded Lucknow area map
 const AREA_MAP: Record<string, { name: string; lat: number; lng: number }> = {
-  "gomti nagar": { name: "Gomti Nagar, Lucknow", lat: 26.8643, lng: 80.9576 },
-  "alambagh": { name: "Alambagh, Lucknow", lat: 26.8028, lng: 80.9022 },
-  "rajajipuram": { name: "Rajajipuram, Lucknow", lat: 26.8373, lng: 80.8926 },
-  "hazratganj": { name: "Hazratganj, Lucknow", lat: 26.8496, lng: 80.9467 },
-  "aminabad": { name: "Aminabad, Lucknow", lat: 26.8512, lng: 80.9334 },
-  "indira nagar": { name: "Indira Nagar, Lucknow", lat: 26.8746, lng: 80.9929 },
-  "aliganj": { name: "Aliganj, Lucknow", lat: 26.8946, lng: 80.9400 },
-  "mahanagar": { name: "Mahanagar, Lucknow", lat: 26.8740, lng: 80.9200 },
-  "chinhat": { name: "Chinhat, Lucknow", lat: 26.8890, lng: 81.0200 },
-  "vikas nagar": { name: "Vikas Nagar, Lucknow", lat: 26.8510, lng: 80.9110 },
-  "jankipuram": { name: "Jankipuram, Lucknow", lat: 26.9160, lng: 80.9450 },
-  "ashiyana": { name: "Ashiyana, Lucknow", lat: 26.7950, lng: 80.9330 },
-  "chowk": { name: "Chowk, Lucknow", lat: 26.8540, lng: 80.9170 },
-  "kaiserbagh": { name: "Kaiserbagh, Lucknow", lat: 26.8460, lng: 80.9380 },
-  "amausi": { name: "Amausi, Lucknow", lat: 26.7610, lng: 80.8840 },
-  "charbagh": { name: "Charbagh, Lucknow", lat: 26.8330, lng: 80.9220 },
-  "telibagh": { name: "Telibagh, Lucknow", lat: 26.7830, lng: 80.9420 },
-  "banthra": { name: "Banthra, Lucknow", lat: 26.7450, lng: 80.9100 },
-  "sitapur road": { name: "Sitapur Road, Lucknow", lat: 26.9050, lng: 80.9600 },
-  "faizabad road": { name: "Faizabad Road, Lucknow", lat: 26.8800, lng: 81.0000 },
-  "vrindavan yojana": { name: "Vrindavan Yojana, Lucknow", lat: 26.8010, lng: 80.9580 },
-  "sushant golf city": { name: "Sushant Golf City, Lucknow", lat: 26.7910, lng: 80.9810 },
-  "husainganj": { name: "Husainganj, Lucknow", lat: 26.8580, lng: 80.9360 },
-  "lalbagh": { name: "Lalbagh, Lucknow", lat: 26.8620, lng: 80.9270 },
+  "new delhi": { name: "New Delhi, India", lat: 28.6139, lng: 77.2090 },
+  "mumbai": { name: "Mumbai, Maharashtra", lat: 19.0760, lng: 72.8777 },
+  "bengaluru": { name: "Bengaluru, Karnataka", lat: 12.9716, lng: 77.5946 },
+  "bangalore": { name: "Bengaluru, Karnataka", lat: 12.9716, lng: 77.5946 },
+  "hyderabad": { name: "Hyderabad, Telangana", lat: 17.3850, lng: 78.4867 },
+  "chennai": { name: "Chennai, Tamil Nadu", lat: 13.0827, lng: 80.2707 },
+  "kolkata": { name: "Kolkata, West Bengal", lat: 22.5726, lng: 88.3639 },
+  "pune": { name: "Pune, Maharashtra", lat: 18.5204, lng: 73.8567 },
+  "ahmedabad": { name: "Ahmedabad, Gujarat", lat: 23.0225, lng: 72.5714 },
+  "jaipur": { name: "Jaipur, Rajasthan", lat: 26.9124, lng: 75.7873 },
+  "lucknow": { name: "Lucknow, Uttar Pradesh", lat: 26.8467, lng: 80.9462 },
 };
 
 // Expanded category keywords
@@ -411,8 +399,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
       // We'll handle this after returning — set a flag
       return {
         text: isHi
-          ? "चैट साफ कर दी गई है! आप नई बातचीत शुरू कर सकते हैं। 🔄"
-          : "Chat cleared! You can start a fresh conversation. 🔄",
+          ? "चैट साफ कर दी गई है! आप नई बातचीत शुरू कर सकते हैं।"
+          : "Chat cleared! You can start a fresh conversation.",
         _clearChat: true,
       };
     }
@@ -427,8 +415,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
     ) {
       return {
         text: isHi
-          ? "नमस्ते! 🙏 मैं जनमित्र AI हूँ। मैं आपकी शिकायत दर्ज करने, टिकट ट्रैक करने, हॉटस्पॉट दिखाने, विभाग की जानकारी देने, या आंकड़े बताने में मदद कर सकता हूँ। 'help' टाइप करें सभी सुविधाएँ देखने के लिए।"
-          : "Namaste! 🙏 I am JanMitra AI. I can help you file complaints, track tickets, view hotspots, check stats, or find department info. Type 'help' to see all capabilities.",
+          ? "नमस्ते! मैं जनमित्र AI हूँ। मैं आपकी शिकायत दर्ज करने, टिकट ट्रैक करने, हॉटस्पॉट दिखाने, विभाग की जानकारी देने, या आंकड़े बताने में मदद कर सकता हूँ। 'help' टाइप करें सभी सुविधाएँ देखने के लिए।"
+          : "Namaste! I am JanMitra AI. I can help you file complaints, track tickets, view hotspots, check stats, or find department info. Type 'help' to see all capabilities.",
       };
     }
 
@@ -448,8 +436,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
     ) {
       return {
         text: isHi
-          ? "धन्यवाद! 🙏 आपकी प्रतिक्रिया हमारे लिए बहुत महत्वपूर्ण है। अगर आपको और कोई सहायता चाहिए, तो बेझिझक पूछें। जनमित्र AI हमेशा आपकी सेवा में तत्पर है!"
-          : "Thank you for your kind words! 🙏 Your feedback matters to us. Feel free to ask if you need anything else. JanMitra AI is always here to serve you!",
+          ? "धन्यवाद! आपकी प्रतिक्रिया हमारे लिए बहुत महत्वपूर्ण है। अगर आपको और कोई सहायता चाहिए, तो बेझिझक पूछें। जनमित्र AI हमेशा आपकी सेवा में तत्पर है!"
+          : "Thank you for your kind words! Your feedback matters to us. Feel free to ask if you need anything else. JanMitra AI is always here to serve you!",
       };
     }
 
@@ -499,8 +487,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
     ) {
       return {
         text: isHi
-          ? "यहाँ लखनऊ के सभी प्रमुख विभागों की जानकारी और हेल्पलाइन नंबर हैं:"
-          : "Here are all major Lucknow departments with their contact details and helpline numbers:",
+          ? "यहाँ भारत के प्रमुख नागरिक सेवा विभागों की जानकारी और हेल्पलाइन नंबर हैं:"
+          : "Here are major civic service departments across India with their contact details and helpline numbers:",
         isCustomCard: true,
         cardType: "department_info" as const,
         cardData: {},
@@ -609,14 +597,14 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
 
       return {
         text: isHi
-          ? `यहाँ लखनऊ के सक्रिय हॉटस्पॉट का विश्लेषण है। कुल ${hotspotsList.length} गंभीर पैटर्न पाए गए हैं:`
-          : `Here is the real-time spatial hotspot analysis for Lucknow. We detected ${hotspotsList.length} active grievance clusters requiring immediate action:`,
+          ? `यहाँ भारत के सक्रिय नागरिक शिकायत हॉटस्पॉट का विश्लेषण है। कुल ${hotspotsList.length} गंभीर पैटर्न पाए गए हैं:`
+          : `Here is the real-time national hotspot analysis. We detected ${hotspotsList.length} active grievance clusters requiring immediate action:`,
         isCustomCard: true,
         cardType: "hotspots",
         cardData: {
           hotspots: hotspotsList.length > 0 ? hotspotsList : [
-            { area: "Gomti Nagar, Lucknow", category: "Garbage / Sanitation", count: 3 },
-            { area: "Rajajipuram, Lucknow", category: "Water Supply", count: 2 },
+            { area: "New Delhi, India", category: "Garbage / Sanitation", count: 3 },
+            { area: "Mumbai, Maharashtra", category: "Water Supply", count: 2 },
           ],
         },
       };
@@ -678,9 +666,9 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
 
     if (isFilingQuery) {
       // Determine area from expanded area map
-      let area = "Gomti Nagar, Lucknow";
-      let lat = 26.8643;
-      let lng = 80.9576;
+      let area = "New Delhi, India";
+      let lat = 28.6139;
+      let lng = 77.2090;
 
       for (const [keyword, data] of Object.entries(AREA_MAP)) {
         if (text.includes(keyword)) {
@@ -730,8 +718,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
 
       return {
         text: isHi
-          ? `मैंने आपकी समस्या को **${detectedCategory.nameHi}** श्रेणी के अंतर्गत सफलतापूर्वक दर्ज कर लिया है! आपका टिकट आईडी **${newTicket.id}** है।${priority === "high" ? " ⚡ इसे उच्च प्राथमिकता पर सेट किया गया है!" : ""} इसे तत्काल संबंधित अधिकारी को सौंप दिया गया है।`
-          : `I have successfully registered your grievance under **${detectedCategory.name}**! Your unique Ticket ID is **${newTicket.id}**.${priority === "high" ? " ⚡ Marked as HIGH PRIORITY!" : ""} Our automated routing has dispatched it to the assigned department.`,
+          ? `मैंने आपकी समस्या को **${detectedCategory.nameHi}** श्रेणी के अंतर्गत सफलतापूर्वक दर्ज कर लिया है! आपका टिकट आईडी **${newTicket.id}** है।${priority === "high" ? " इसे उच्च प्राथमिकता पर सेट किया गया है!" : ""} इसे तत्काल संबंधित अधिकारी को सौंप दिया गया है।`
+          : `I have successfully registered your grievance under **${detectedCategory.name}**! Your unique Ticket ID is **${newTicket.id}**.${priority === "high" ? " Marked as HIGH PRIORITY!" : ""} Our automated routing has dispatched it to the assigned department.`,
         isCustomCard: true,
         cardType: "filing_success",
         cardData: newTicket,
@@ -741,8 +729,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
     // ── 12. SMART FALLBACK ──
     return {
       text: isHi
-        ? "मुझे ठीक से समझ नहीं आया। आप यह कर सकते हैं:\n\n• शिकायत दर्ज करें: 'Gomti Nagar me kachra pada hai'\n• टिकट ट्रैक करें: 'JM-2026-008 का स्टेटस'\n• हॉटस्पॉट देखें: 'active hotspots'\n• आंकड़े देखें: 'stats'\n• विभाग जानकारी: 'department info'\n• सहायता: 'help'\n\n💡 बस अपनी समस्या बताएं, मैं स्वतः सही विभाग तक पहुँचा दूँगा!"
-        : "I didn't quite catch that. Here's what I can do:\n\n• File a complaint: 'Water pipe leakage in Alambagh'\n• Track a ticket: 'Status of JM-2026-008'\n• View hotspots: 'active hotspots'\n• Check analytics: 'stats'\n• Department info: 'department info'\n• Get help: 'help'\n\n💡 Just describe your problem and I'll auto-route it to the right department!",
+        ? "मुझे ठीक से समझ नहीं आया। आप यह कर सकते हैं:\n\n• शिकायत दर्ज करें: 'New Delhi me kachra pada hai'\n• टिकट ट्रैक करें: 'JM-2026-008 का स्टेटस'\n• हॉटस्पॉट देखें: 'active hotspots'\n• आंकड़े देखें: 'stats'\n• विभाग जानकारी: 'department info'\n• सहायता: 'help'\n\nबस अपनी समस्या बताएं, मैं आपके शहर या क्षेत्र के सही विभाग तक शिकायत पहुँचाऊँगा!"
+        : "I didn't quite catch that. Here's what I can do:\n\n• File a complaint: 'Water pipe leakage in Mumbai'\n• Track a ticket: 'Status of JM-2026-008'\n• View hotspots: 'active hotspots'\n• Check analytics: 'stats'\n• Department info: 'department info'\n• Get help: 'help'\n\nDescribe your problem and city or region, and I will route it to the appropriate civic department.",
     };
   };
 
@@ -857,8 +845,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
 
       voiceTimeout1Ref.current = setTimeout(() => {
         const partialText = isHi
-          ? "हजरतगंज मेन रोड पर बिजली का खंभा क्षतिग्रस्त हो गया है..."
-          : "Hazratganj main road pe electrical pole damage ho gaya hai...";
+          ? "नई दिल्ली के मुख्य मार्ग पर बिजली का खंभा क्षतिग्रस्त हो गया है..."
+          : "An electrical pole on the main road in New Delhi has been damaged...";
         setVoiceText(partialText);
         setInputValue(partialText);
         voiceTimeout1Ref.current = null;
@@ -866,8 +854,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
 
       voiceTimeout2Ref.current = setTimeout(() => {
         const finalTranscript = isHi
-          ? "हजरतगंज मेन रोड पर बिजली का खंभा क्षतिग्रस्त हो गया है, कृपया ठीक करें।"
-          : "Hazratganj main road pe electrical pole damage ho gaya hai, please repair karvao.";
+          ? "नई दिल्ली के मुख्य मार्ग पर बिजली का खंभा क्षतिग्रस्त हो गया है, कृपया ठीक करें।"
+          : "An electrical pole on the main road in New Delhi has been damaged. Please repair it.";
 
         setIsRecording(false);
         setVoiceText(finalTranscript);
@@ -1010,7 +998,7 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
                     </span>
                   </h4>
                   <p className="text-[10px] text-slate-400 flex items-center gap-1">
-                    Lucknow Nagar Nigam • Online • 13 Categories
+                    National Civic AI Portal • Online • 13 Categories
                   </p>
                 </div>
               </div>
@@ -1081,8 +1069,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
                         <div className="p-4 rounded-xl border border-violet-500/20 bg-violet-950/10 backdrop-blur-md space-y-3">
                           <p className="text-xs text-slate-300 leading-relaxed">
                             {isHi
-                              ? "नमस्ते! 🙏 मैं जनमित्र AI सहायक हूँ। आप लखनऊ में नागरिक समस्याओं को सीधे बातचीत करके दर्ज कर सकते हैं, टिकट ट्रैक कर सकते हैं, या विभागीय जानकारी प्राप्त कर सकते हैं।"
-                              : "Namaste! 🙏 I am the JanMitra AI Assistant. You can file civic complaints in Lucknow directly through conversation, track tickets, view analytics, or get department info."}
+                              ? "नमस्ते! मैं जनमित्र AI सहायक हूँ। आप लखनऊ में नागरिक समस्याओं को सीधे बातचीत करके दर्ज कर सकते हैं, टिकट ट्रैक कर सकते हैं, या विभागीय जानकारी प्राप्त कर सकते हैं।"
+                              : "Namaste! I am the JanMitra AI Assistant. You can file civic complaints across India through conversation, track tickets, view analytics, or get department info."}
                           </p>
                           <div className="border-t border-slate-800/80 pt-2">
                             <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider block mb-1.5">
@@ -1093,37 +1081,37 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
                                 onClick={() => handleSendMessage(isHi ? "मेरे टिकट JM-2026-008 की स्थिति बताएं" : "Track status of ticket JM-2026-008")}
                                 className="px-2.5 py-1 text-[10px] rounded-full border border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 text-left transition-all duration-150 cursor-pointer"
                               >
-                                📋 {isHi ? "JM-2026-008 ट्रैक करें" : "Track JM-2026-008"}
+                                <FileText className="mr-1 inline h-3 w-3" /> {isHi ? "JM-2026-008 ट्रैक करें" : "Track JM-2026-008"}
                               </button>
                               <button
-                                onClick={() => handleSendMessage(isHi ? "आलमबाग क्षेत्र में सड़कों के गड्ढे की शिकायत दर्ज करें" : "Register a pothole complaint in Alambagh area")}
+                                onClick={() => handleSendMessage(isHi ? "नई दिल्ली क्षेत्र में सड़कों के गड्ढे की शिकायत दर्ज करें" : "Register a pothole complaint in New Delhi")}
                                 className="px-2.5 py-1 text-[10px] rounded-full border border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 text-left transition-all duration-150 cursor-pointer"
                               >
-                                🚧 {isHi ? "सड़क गड्ढा दर्ज करें" : "File Road Complaint"}
+                                <Construction className="mr-1 inline h-3 w-3" /> {isHi ? "सड़क गड्ढा दर्ज करें" : "File Road Complaint"}
                               </button>
                               <button
-                                onClick={() => handleSendMessage(isHi ? "सक्रिय हॉटस्पॉट विश्लेषण दिखाओ" : "Show Lucknow active hotspots")}
+                                onClick={() => handleSendMessage(isHi ? "भारत के सक्रिय हॉटस्पॉट दिखाओ" : "Show national active hotspots")}
                                 className="px-2.5 py-1 text-[10px] rounded-full border border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 text-left transition-all duration-150 cursor-pointer"
                               >
-                                🔥 {isHi ? "सक्रिय हॉटस्पॉट?" : "Active Hotspots"}
+                                <Flame className="mr-1 inline h-3 w-3" /> {isHi ? "सक्रिय हॉटस्पॉट?" : "Active Hotspots"}
                               </button>
                               <button
                                 onClick={() => handleSendMessage("stats")}
                                 className="px-2.5 py-1 text-[10px] rounded-full border border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 text-left transition-all duration-150 cursor-pointer"
                               >
-                                📊 {isHi ? "आंकड़े देखें" : "View Stats"}
+                                <BarChart3 className="mr-1 inline h-3 w-3" /> {isHi ? "आंकड़े देखें" : "View Stats"}
                               </button>
                               <button
                                 onClick={() => handleSendMessage("department info")}
                                 className="px-2.5 py-1 text-[10px] rounded-full border border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 text-left transition-all duration-150 cursor-pointer"
                               >
-                                🏢 {isHi ? "विभाग जानकारी" : "Dept. Info"}
+                                <Building2 className="mr-1 inline h-3 w-3" /> {isHi ? "विभाग जानकारी" : "Dept. Info"}
                               </button>
                               <button
                                 onClick={() => handleSendMessage("help")}
                                 className="px-2.5 py-1 text-[10px] rounded-full border border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 text-left transition-all duration-150 cursor-pointer"
                               >
-                                ❓ {isHi ? "सहायता / गाइड" : "Help / Guide"}
+                                <HelpCircle className="mr-1 inline h-3 w-3" /> {isHi ? "सहायता / गाइड" : "Help / Guide"}
                               </button>
                             </div>
                           </div>
@@ -1221,10 +1209,11 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
                             ))}
                           </div>
                           
-                          <p className="text-[10px] text-amber-500/90 leading-relaxed bg-amber-500/5 p-2 rounded-lg border border-amber-500/15">
-                            ⚠️ {isHi
+                          <p className="text-[10px] text-amber-500/90 leading-relaxed bg-amber-500/5 p-2 rounded-lg border border-amber-500/15 flex items-start gap-1.5">
+                            <AlertTriangle className="mt-0.5 h-3 w-3 shrink-0" />
+                            <span>{isHi
                               ? "इन क्षेत्रों में शिकायत घनत्व के कारण प्राथमिकता को 'HIGH' पर अपग्रेड कर दिया गया है और एसएलए टाइमलाइन को 50% तक कम कर दिया गया है।"
-                              : "Priority elevated to HIGH & SLA countdown accelerated by 50% for these clusters to enforce immediate resolution."}
+                              : "Priority elevated to HIGH & SLA countdown accelerated by 50% for these clusters to enforce immediate resolution."}</span>
                           </p>
                         </div>
                       )}
@@ -1359,18 +1348,18 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
 
                           <div className="space-y-1.5">
                             {[
-                              { icon: "📝", cmd: isHi ? "'कचरा पड़ा है Gomti Nagar me'" : "'Water pipe leak in Alambagh'", desc: isHi ? "शिकायत दर्ज करें (13 श्रेणियाँ)" : "File a complaint (13 categories)" },
-                              { icon: "🔍", cmd: isHi ? "'JM-2026-008 का स्टेटस'" : "'Track JM-2026-008'", desc: isHi ? "टिकट ट्रैक करें" : "Track ticket status" },
-                              { icon: "🔥", cmd: isHi ? "'active hotspots'" : "'hotspots'", desc: isHi ? "सक्रिय हॉटस्पॉट देखें" : "View grievance clusters" },
-                              { icon: "📊", cmd: isHi ? "'stats'" : "'stats / analytics'", desc: isHi ? "सिस्टम आंकड़े" : "System analytics" },
-                              { icon: "🏢", cmd: isHi ? "'विभाग जानकारी'" : "'department info'", desc: isHi ? "विभाग हेल्पलाइन" : "Department helplines" },
-                              { icon: "📋", cmd: isHi ? "'हाल की शिकायतें'" : "'recent complaints'", desc: isHi ? "हाल की शिकायतों की सूची" : "Recent complaints list" },
-                              { icon: "⚡", cmd: isHi ? "'escalate'" : "'escalate / admin override'", desc: isHi ? "ऑटो-एस्कलेशन" : "Auto-escalation trigger" },
-                              { icon: "🎤", cmd: isHi ? "माइक बटन दबाएं" : "Press mic button", desc: isHi ? "वॉयस इनपुट (हिंदी/English)" : "Voice input (Hindi/English)" },
-                              { icon: "🔄", cmd: isHi ? "'clear'" : "'clear / reset'", desc: isHi ? "चैट साफ करें" : "Clear chat history" },
+                              { icon: FileText, cmd: isHi ? "'कचरा पड़ा है New Delhi me'" : "'Water pipe leak in Mumbai'", desc: isHi ? "शिकायत दर्ज करें (13 श्रेणियाँ)" : "File a complaint (13 categories)" },
+                              { icon: Search, cmd: isHi ? "'JM-2026-008 का स्टेटस'" : "'Track JM-2026-008'", desc: isHi ? "टिकट ट्रैक करें" : "Track ticket status" },
+                              { icon: Flame, cmd: isHi ? "'active hotspots'" : "'hotspots'", desc: isHi ? "सक्रिय हॉटस्पॉट देखें" : "View grievance clusters" },
+                              { icon: BarChart3, cmd: isHi ? "'stats'" : "'stats / analytics'", desc: isHi ? "सिस्टम आंकड़े" : "System analytics" },
+                              { icon: Building2, cmd: isHi ? "'विभाग जानकारी'" : "'department info'", desc: isHi ? "विभाग हेल्पलाइन" : "Department helplines" },
+                              { icon: ClipboardList, cmd: isHi ? "'हाल की शिकायतें'" : "'recent complaints'", desc: isHi ? "हाल की शिकायतों की सूची" : "Recent complaints list" },
+                              { icon: Zap, cmd: isHi ? "'escalate'" : "'escalate / admin override'", desc: isHi ? "ऑटो-एस्कलेशन" : "Auto-escalation trigger" },
+                              { icon: Mic, cmd: isHi ? "माइक बटन दबाएं" : "Press mic button", desc: isHi ? "वॉयस इनपुट (हिंदी/English)" : "Voice input (Hindi/English)" },
+                              { icon: RefreshCw, cmd: isHi ? "'clear'" : "'clear / reset'", desc: isHi ? "चैट साफ करें" : "Clear chat history" },
                             ].map((item, i) => (
                               <div key={i} className="flex items-start gap-2 p-1.5 rounded-lg hover:bg-slate-950/40 transition-colors">
-                                <span className="text-sm">{item.icon}</span>
+                                <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-violet-400" />
                                 <div>
                                   <code className="text-[10px] text-violet-400 bg-violet-500/10 px-1.5 py-0.5 rounded font-mono">{item.cmd}</code>
                                   <p className="text-[10px] text-slate-400 mt-0.5">{item.desc}</p>
@@ -1381,8 +1370,8 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
 
                           <p className="text-[10px] text-slate-500 text-center bg-slate-950/40 py-1.5 rounded border border-slate-800">
                             {isHi
-                              ? "💡 20+ लखनऊ क्षेत्र समर्थित • हिंदी, English, Hinglish में बात करें"
-                              : "💡 20+ Lucknow areas supported • Speak in Hindi, English, or Hinglish"}
+                              ? "20+ लखनऊ क्षेत्र समर्थित • हिंदी, English, Hinglish में बात करें"
+                              : "Cities and regions across India supported • Speak in Hindi, English, or Hinglish"}
                           </p>
                         </div>
                       )}
@@ -1562,17 +1551,18 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
               {/* Quick Action Chips */}
               <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-0.5">
                 {[
-                  { label: isHi ? "📊 आंकड़े" : "📊 Stats", cmd: "stats" },
-                  { label: isHi ? "🔥 हॉटस्पॉट" : "🔥 Hotspots", cmd: "hotspots" },
-                  { label: isHi ? "📋 हाल की" : "📋 Recent", cmd: "recent complaints" },
-                  { label: isHi ? "🏢 विभाग" : "🏢 Depts", cmd: "department info" },
-                  { label: isHi ? "❓ मदद" : "❓ Help", cmd: "help" },
+                  { icon: BarChart3, label: isHi ? "आंकड़े" : "Stats", cmd: "stats" },
+                  { icon: Flame, label: isHi ? "हॉटस्पॉट" : "Hotspots", cmd: "hotspots" },
+                  { icon: ClipboardList, label: isHi ? "हाल की" : "Recent", cmd: "recent complaints" },
+                  { icon: Building2, label: isHi ? "विभाग" : "Depts", cmd: "department info" },
+                  { icon: HelpCircle, label: isHi ? "मदद" : "Help", cmd: "help" },
                 ].map((chip) => (
                   <button
                     key={chip.cmd}
                     onClick={() => handleSendMessage(chip.cmd)}
                     className="shrink-0 px-2.5 py-1 text-[9px] font-semibold rounded-lg border border-slate-800/80 bg-slate-900/30 hover:bg-slate-800/60 text-slate-400 hover:text-slate-300 transition-all cursor-pointer"
                   >
+                    <chip.icon className="h-3 w-3" />
                     {chip.label}
                   </button>
                 ))}

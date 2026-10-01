@@ -1,3 +1,32 @@
+-- Create citizens table
+-- name/mobile/password are retained for compatibility with src/lib/auth.ts.
+CREATE TABLE IF NOT EXISTS public.citizens (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  full_name TEXT,
+  name TEXT,
+  email TEXT NOT NULL UNIQUE,
+  phone TEXT,
+  mobile TEXT UNIQUE,
+  password TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+ALTER TABLE public.citizens ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "citizens_public_select" ON public.citizens;
+DROP POLICY IF EXISTS "citizens_public_insert" ON public.citizens;
+DROP POLICY IF EXISTS "citizens_public_update" ON public.citizens;
+
+CREATE POLICY "citizens_public_select"
+  ON public.citizens FOR SELECT TO anon, authenticated USING (true);
+
+CREATE POLICY "citizens_public_insert"
+  ON public.citizens FOR INSERT TO anon, authenticated WITH CHECK (true);
+
+CREATE POLICY "citizens_public_update"
+  ON public.citizens FOR UPDATE TO anon, authenticated USING (true) WITH CHECK (true);
+
 -- Create complaints table
 CREATE TABLE public.complaints (
   id TEXT PRIMARY KEY,

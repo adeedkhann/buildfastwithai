@@ -13,34 +13,11 @@ export async function GET(request: Request) {
 
     const isHi = lang === "hi";
 
-    // 1. In-memory heuristic fallback for offline/sandbox/timeout scenarios or local testing
+    // 1. In-memory fallback for offline, sandbox, or timeout scenarios.
     const getLocalHeuristic = (latitude: number, longitude: number) => {
-      // If coordinates are extremely close to the Lucknow city center or Gomti Nagar (standard demo location)
-      const latDiff = Math.abs(latitude - 26.8532);
-      const lngDiff = Math.abs(longitude - 80.9723);
-
-      if (latDiff < 0.05 && lngDiff < 0.05) {
-        return {
-          area: isHi ? "गोमती नगर, लखनऊ" : "Gomti Nagar, Lucknow",
-          lat: latitude,
-          lng: longitude
-        };
-      }
-      
-      // Hazratganj, Lucknow center fallback
-      const hazratganjLatDiff = Math.abs(latitude - 26.8467);
-      const hazratganjLngDiff = Math.abs(longitude - 80.9462);
-      if (hazratganjLatDiff < 0.05 && hazratganjLngDiff < 0.05) {
-        return {
-          area: isHi ? "हज़रतगंज, लखनऊ" : "Hazratganj, Lucknow",
-          lat: latitude,
-          lng: longitude
-        };
-      }
-
-      // General fallback
+      // Keep the fallback location-neutral; Nominatim supplies the actual city when available.
       return {
-        area: isHi ? "लखनऊ, उत्तर प्रदेश" : "Lucknow, UP",
+        area: isHi ? "भारत" : "India",
         lat: latitude,
         lng: longitude
       };
@@ -78,7 +55,7 @@ export async function GET(request: Request) {
 
         let area = "";
 
-        // Build a beautifully formatted concise string (e.g. "Gomti Nagar, Lucknow")
+        // Build a concise localized area string from the reverse-geocoder response.
         if (suburb && city) {
           area = `${suburb}, ${city}`;
         } else if (road && city) {

@@ -19,16 +19,16 @@ export default function ApiDocsPage() {
     "rawText": "Sector 14 main road pothole has caused an accident today.",
     "audioUrl": null,
     "imageUrl": "https://storage.janmitra.gov.in/evidence/img-4921.jpg",
-    "district": "Lucknow",
+    "district": "Mumbai",
     "coordinates": "26.8467, 80.9462"
   }'`;
 
   const requestPayload = `{
-  "rawText": "Water line leak near crossing hazratganj",
+  "rawText": "Water line leak near a market crossing in Mumbai",
   "audioUrl": "https://storage.janmitra.gov.in/voice/audio-9812.mp3",
   "imageUrl": null,
-  "district": "Lucknow",
-  "coordinates": "26.8504, 80.9496"
+  "district": "Mumbai",
+  "coordinates": "19.0760, 72.8777"
 }`;
 
   const responsePayload = `{
@@ -39,10 +39,10 @@ export default function ApiDocsPage() {
     "analysis": {
       "category": "Water Supply & Sewage Management",
       "priority": "CRITICAL",
-      "assignedDepartment": "Lucknow Jal Nigam (Zone 1)",
+      "assignedDepartment": "Mumbai Water Supply Department (Zone 1)",
       "assignedOfficer": "Er. Alok Srivastava (Executive Engineer)",
       "confidenceScore": 0.98,
-      "aiSummary": "Drinking water leakage near Hazratganj crossing causing severe flooding and massive water wastage."
+      "aiSummary": "Drinking water leakage near a Mumbai market crossing causing flooding and water wastage."
     },
     "slaDeadline": "2026-05-23T21:47:56.000Z",
     "trackingUrl": "https://janmitra.gov.in/citizen?tab=track&id=JM-2026-X8A2"

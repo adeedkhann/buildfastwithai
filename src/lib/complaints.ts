@@ -225,7 +225,7 @@ export async function addComplaint(complaintData: Partial<Complaint>): Promise<C
     department_id: dept?.id || "nagar-nigam",
     latitude: complaintData.latitude || 26.8467,
     longitude: complaintData.longitude || 80.9462,
-    area: complaintData.area || "Gomti Nagar, Lucknow",
+    area: complaintData.area || "New Delhi, India",
     citizen_id: complaintData.citizenId || null,
     citizen_name: complaintData.citizenName || "Demo Citizen",
     citizen_phone: complaintData.citizenPhone || "+91 99999 88888",
@@ -410,7 +410,7 @@ export async function getAnalytics(): Promise<AnalyticsData> {
     if (categoriesMap[c.category]) categoriesMap[c.category].value += 1;
     else categoriesMap["Garbage / Sanitation"].value += 1;
 
-    const dept = c.department || "Lucknow Nagar Nigam";
+    const dept = c.department || "Municipal Corporation";
     if (!departmentsMap[dept]) departmentsMap[dept] = { resolved: 0, pending: 0, totalDays: 0, count: 0 };
     if (c.status === "resolved") departmentsMap[dept].resolved += 1;
     else departmentsMap[dept].pending += 1;

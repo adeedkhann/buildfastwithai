@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     if (!apiKey) {
       console.warn("GEMINI_API_KEY is not defined. Falling back to simulated transcription.");
       // Return simulated demo transcript based on time of recording for demonstration
-      const simulatedText = "Solid waste dump near Mithai Chauraha in Gomti Nagar. Overflowing containers causing extreme stink, blocking pedestrian pathway, and attracting stray animals. Needs urgent sanitation cleaning and department intervention.";
+      const simulatedText = "Solid waste dump near a residential market in New Delhi. Overflowing containers are blocking the pedestrian pathway and attracting stray animals. It needs urgent sanitation intervention.";
       return NextResponse.json({ text: simulatedText, isFallback: true });
     }
 
@@ -37,12 +37,12 @@ export async function POST(request: Request) {
             {
               parts: [
                 {
-                  text: `You are a precise, elite speech-to-text transcriber for a citizen grievance system (JanMitra AI) in Uttar Pradesh, India.
+                  text: `You are a precise, elite speech-to-text transcriber for a nationwide Indian citizen grievance system (JanMitra AI).
 Accurately transcribe the provided audio clip into plain text exactly as spoken.
 - If spoken in Hindi, transcribe it in Devanagari Hindi script.
 - If spoken in English, transcribe it in English.
 - If spoken in Hinglish (Hindi written in Latin script or mixed Hindi/English), transcribe it in Hinglish exactly as spoken.
-- Preserve names of locations (e.g., Gomti Nagar, Mithai Chauraha, Hazratganj, etc.) and names of complaints exactly as spoken.
+- Preserve names of cities, neighborhoods, landmarks, and complaints exactly as spoken.
 - Do NOT translate, rewrite, summarize, or edit the text. Output ONLY the raw spoken words.
 - Do NOT add any preamble, greeting, markdown backticks, conversational remarks, or metadata.
 - If the audio contains only silence or ambient background noise with no discernable speech, return an empty string.`

@@ -20,8 +20,8 @@ import {
   Info
 } from "lucide-react";
 
-// Standard Lucknow Coordinates
-const LUCKNOW_CENTER: [number, number] = [26.8467, 80.9462];
+// National default view; complaint coordinates determine the actual map focus.
+const INDIA_CENTER: [number, number] = [22.5937, 78.9629];
 
 export default function ComplaintHeatmap({
   onSelectComplaint,
@@ -44,7 +44,7 @@ export default function ComplaintHeatmap({
     return (
       <div className="h-[520px] w-full bg-card/45 border border-border/20 animate-pulse rounded-2xl flex flex-col items-center justify-center text-muted-foreground">
         <LoaderComponent />
-        <span className="text-sm font-bold mt-3 text-muted-foreground/80 tracking-wider">LOADING LUCKNOW DARK GRID MAP...</span>
+        <span className="text-sm font-bold mt-3 text-muted-foreground/80 tracking-wider">LOADING NATIONAL CIVIC ACTIVITY MAP...</span>
       </div>
     );
   }
@@ -81,8 +81,8 @@ export default function ComplaintHeatmap({
     <div className="relative w-full h-full min-h-[480px] rounded-2xl border border-border/30 overflow-hidden shadow-2xl bg-slate-950">
       {/* CartoDB Dark Heatmap Canvas */}
       <MapContainer
-        center={LUCKNOW_CENTER}
-        zoom={13}
+        center={INDIA_CENTER}
+        zoom={5}
         style={{ height: "100%", width: "100%" }}
         className="z-10"
         zoomControl={false}
@@ -94,8 +94,8 @@ export default function ComplaintHeatmap({
 
         {filteredComplaints.map((c) => {
           const markerColor = getPriorityColor(c.priority);
-          const lat = c.latitude || LUCKNOW_CENTER[0];
-          const lng = c.longitude || LUCKNOW_CENTER[1];
+          const lat = c.latitude || INDIA_CENTER[0];
+          const lng = c.longitude || INDIA_CENTER[1];
 
           return (
             <CircleMarker
@@ -180,7 +180,7 @@ export default function ComplaintHeatmap({
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search Gomti Nagar, ID, issue..."
+              placeholder="Search city, ID, or issue..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9.5 pr-8 h-9 border border-white/10 rounded-xl bg-white/4 text-xs focus-visible:ring-offset-0 focus-visible:ring-1 focus-visible:ring-primary/45 placeholder:text-muted-foreground/60 text-white font-semibold"

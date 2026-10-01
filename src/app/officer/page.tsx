@@ -1791,7 +1791,7 @@ export default function OfficerDashboard() {
 
                             <div className="border-t border-cyan-500/10 pt-3 flex items-center justify-between text-[9px] text-cyan-400/60 font-bold">
                               <span>Consolidated Hotspot Protocol active.</span>
-                              <span className="animate-pulse">● Scanning Lucknow Zone</span>
+                              <span className="animate-pulse">● Scanning National Civic Zone</span>
                             </div>
                           </div>
                         </motion.div>

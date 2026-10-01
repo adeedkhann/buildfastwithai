@@ -108,7 +108,6 @@ export default function CitizenDashboard() {
   const [otpSentMessage, setOtpSentMessage] = useState<string | null>(null);
   const [otpVerified, setOtpVerified] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
-  const [showGoogleSimulation, setShowGoogleSimulation] = useState(false);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -253,84 +252,6 @@ export default function CitizenDashboard() {
       }
     } catch (err) {
       setAuthError(isHi ? "ओटीपी भेजने में विफल।" : "Failed to resend OTP.");
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    setAuthError(null);
-    setAuthLoading(true);
-    try {
-      setShowGoogleSimulation(true);
-    } catch (err) {
-      setAuthError(isHi ? "गूगल साइन-इन विफल रहा।" : "Google Sign-In failed.");
-      setAuthLoading(false);
-    }
-  };
-
-  const handleSelectGoogleAccount = async (name: string, email: string, mobile: string) => {
-    setAuthError(null);
-    setAuthLoading(true);
-
-    try {
-      const cleanEmail = email.toLowerCase().trim();
-      const cleanMobile = mobile.trim();
-
-      // Check if user already exists in database
-      const { data: existingCitizen, error: findError } = await supabase
-        .from("citizens")
-        .select("*")
-        .eq("email", cleanEmail)
-        .maybeSingle();
-
-      let citizen = existingCitizen;
-
-      if (findError) {
-        setAuthError(isHi ? "डेटाबेस त्रुटि।" : "Database error.");
-        setAuthLoading(false);
-        return;
-      }
-
-      if (!citizen) {
-        // Create new citizen record for Google User
-        const { data: newCitizen, error: insertError } = await supabase
-          .from("citizens")
-          .insert({
-            name: name,
-            email: cleanEmail,
-            mobile: cleanMobile,
-            password: `google-oauth-${Math.floor(1000 + Math.random() * 9000)}`,
-          })
-          .select()
-          .single();
-
-        if (insertError || !newCitizen) {
-          setAuthError(insertError?.message || (isHi ? "नागरिक पंजीकरण विफल।" : "Failed to register citizen."));
-          setAuthLoading(false);
-          return;
-        }
-
-        citizen = newCitizen;
-      }
-
-      // Create session
-      const sessionData = {
-        role: "citizen" as const,
-        email: citizen.email,
-        name: citizen.name,
-        id: citizen.id,
-        mobile: citizen.mobile,
-        authenticatedAt: new Date().toISOString(),
-      };
-
-      setAuthSession(sessionData);
-      setSession(sessionData);
-      window.dispatchEvent(new Event("storage"));
-      getComplaints(citizen.id).then(setComplaints);
-      setShowGoogleSimulation(false);
-    } catch (err) {
-      setAuthError(isHi ? "गूगल साइन-इन विफल रहा।" : "Google Sign-In failed.");
     } finally {
       setAuthLoading(false);
     }
@@ -1121,30 +1042,6 @@ export default function CitizenDashboard() {
                         )}
                       </Button>
 
-                      {/* Google Login Separator & Button */}
-                      <div className="relative my-4 flex items-center justify-center">
-                        <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-slate-800/60" />
-                        </div>
-                        <span className="relative z-10 bg-[#070b15] px-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                          {isHi ? "या" : "Or"}
-                        </span>
-                      </div>
-
-                      <Button
-                        type="button"
-                        onClick={handleGoogleSignIn}
-                        disabled={authLoading}
-                        className="w-full h-11 rounded-xl bg-[#090d16] hover:bg-[#111827] border border-[#1f2937]/80 hover:border-indigo-500/30 text-gray-300 hover:text-white font-bold cursor-pointer transition-all active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-md hover:shadow-[0_0_20px_rgba(99,102,241,0.1)]"
-                      >
-                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
-                        </svg>
-                        <span>{isHi ? "गूगल के साथ साइन इन करें" : "Sign In with Google"}</span>
-                      </Button>
                     </motion.div>
                   </form>
                 )}
@@ -2158,89 +2055,6 @@ export default function CitizenDashboard() {
         )}
       </AnimatePresence>
 
-      {/* 5. Simulated Google Authentication Modal (High-Fidelity) */}
-      <AnimatePresence>
-        {showGoogleSimulation && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 font-sans text-gray-800"
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              className="max-w-md w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200"
-            >
-              {/* Header with Google logo */}
-              <div className="p-6 text-center space-y-4 border-b border-gray-100 flex flex-col items-center">
-                <svg className="w-8 h-8" viewBox="0 0 24 24">
-                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
-                </svg>
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-gray-900">Sign in with Google</h3>
-                  <p className="text-xs text-gray-500">to continue to JanMitra AI</p>
-                </div>
-              </div>
-
-              {/* Account List */}
-              <div className="p-6 space-y-4">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider pl-1">Choose an account</p>
-                
-                <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {/* Account 1 */}
-                  <button
-                    type="button"
-                    onClick={() => handleSelectGoogleAccount("Amit Kumar", "amit@gmail.com", "9876543210")}
-                    className="w-full flex items-center gap-3 p-3 rounded-2xl border border-gray-200 hover:bg-gray-50 text-left cursor-pointer transition-all active:scale-[0.99] select-none"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600 shrink-0">
-                      AK
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold text-gray-800 truncate">Amit Kumar</p>
-                      <p className="text-xs text-gray-500 truncate font-mono">amit@gmail.com</p>
-                    </div>
-                  </button>
-
-                  {/* Account 2 */}
-                  <button
-                    type="button"
-                    onClick={() => handleSelectGoogleAccount("Abhishek Sharma", "theabhishekyt@gmail.com", "9631706698")}
-                    className="w-full flex items-center gap-3 p-3 rounded-2xl border border-gray-200 hover:bg-gray-50 text-left cursor-pointer transition-all active:scale-[0.99] select-none"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center font-bold text-purple-600 shrink-0">
-                      AS
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold text-gray-800 truncate">Abhishek Sharma</p>
-                      <p className="text-xs text-gray-500 truncate font-mono">theabhishekyt@gmail.com</p>
-                    </div>
-                  </button>
-                </div>
-
-                {/* Footer buttons */}
-                <div className="pt-2 flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowGoogleSimulation(false);
-                      setAuthLoading(false);
-                    }}
-                    className="text-xs font-bold text-gray-500 hover:text-gray-800 px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }

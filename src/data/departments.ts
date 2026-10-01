@@ -7,8 +7,8 @@ import { Department, ComplaintCategory } from "@/types";
 export const departments: Department[] = [
   {
     id: "nagar-nigam",
-    name: "Lucknow Nagar Nigam",
-    nameHi: "लखनऊ नगर निगम",
+    name: "Municipal Corporation",
+    nameHi: "नगर निगम",
     officerName: "Shri Rajesh Kumar",
     officerTitle: "Municipal Commissioner",
     avgResolutionDays: 3,
@@ -67,8 +67,8 @@ export const departments: Department[] = [
   },
   {
     id: "lmc",
-    name: "Lucknow Municipal Corporation",
-    nameHi: "लखनऊ नगर निगम (LMC)",
+    name: "Municipal Street Lighting Authority",
+    nameHi: "नगर स्ट्रीट लाइट प्राधिकरण",
     officerName: "Smt. Neha Tripathi",
     officerTitle: "Ward Commissioner",
     avgResolutionDays: 4,

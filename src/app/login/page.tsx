@@ -261,7 +261,7 @@ export default function LoginPage() {
       glowClass: "shadow-[0_0_35px_-5px_rgba(245,158,11,0.35)] border-amber-500/40 hover:border-amber-400",
       badge: "Command Security Clearance Level A",
       roleKey: "UP-GOV-OFFICER",
-      district: "Lucknow Central Command",
+      district: "National Civic Command",
       tagline: "Secure Telemetry Hub",
     },
     {

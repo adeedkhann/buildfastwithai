@@ -40,7 +40,7 @@ const presets: PresetComplaint[] = [
     lang: "Hindi / Devanagari",
     category: "Sanitation & Waste Management",
     priority: "HIGH",
-    dept: "Lucknow Nagar Nigam (Zone 4)",
+    dept: "New Delhi Municipal Corporation (Zone 4)",
     officer: "Shri Rajesh Kumar (Chief Sanitation Inspector)",
     summaryHi: "गोमती नगर में कचरे के ढेर और उससे फैलने वाली बदबू के कारण स्वच्छता की गंभीर समस्या है।",
     summaryEn: "Severe sanitation concern in Gomti Nagar due to accumulation of garbage heaps and foul odor.",
@@ -52,11 +52,11 @@ const presets: PresetComplaint[] = [
     ]
   },
   {
-    text: "Hazratganj main crossing ke pass water pipeline leak ho gayi hai, subah se hazaron gallon peene ka paani sadak par beh raha hai.",
+    text: "Andheri main crossing ke pass water pipeline leak ho gayi hai, subah se hazaron gallon peene ka paani sadak par beh raha hai.",
     lang: "Hinglish / Roman Hindi",
     category: "Water Supply & Sewage Management",
     priority: "CRITICAL",
-    dept: "Lucknow Jal Nigam (Zone 1)",
+    dept: "Mumbai Water Supply Department (Zone 1)",
     officer: "Er. Alok Srivastava (Executive Engineer)",
     summaryHi: "हज़रतगंज चौराहे के पास मुख्य पेयजल पाइपलाइन लीक होने से भारी जलभराव और पानी की बर्बादी हो रही है।",
     summaryEn: "Drinking water leakage near Hazratganj crossing causing severe flooding and massive water wastage.",
@@ -64,7 +64,7 @@ const presets: PresetComplaint[] = [
       "Water valve shutoff command issued to Hazratganj pumping station",
       "Emergency pipeline repair unit dispatched",
       "Traffic control department notified regarding water logging",
-      "Auto-escalated to Chief Engineer Lucknow Jal Sansthan directly due to high wastage volume"
+      "Auto-escalated to the regional chief engineer due to high wastage volume"
     ]
   },
   {
@@ -117,8 +117,8 @@ export function AIPlayground() {
       const lower = currentText.toLowerCase();
       let category = "General Grievance";
       let priority: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" = "MEDIUM";
-      let dept = "Lucknow District Administration";
-      let officer = "Shri Anand Vardhan (SDM Lucknow)";
+      let dept = "District Administration";
+      let officer = "Regional Civic Officer";
       let summaryHi = "नागरिक द्वारा दर्ज शिकायत का त्वरित समाधान प्रेषित है।";
       let summaryEn = "Grievance registered and sent to administrative cell for review.";
       let actions = [
@@ -135,7 +135,7 @@ export function AIPlayground() {
         summaryHi = "सड़क मरम्मत और गड्ढों के कारण यातायात अवरोध एवं सुरक्षा संबंधी शिकायत।";
         summaryEn = "Road repair and pothole grievance causing safety and transport issues.";
         actions = [
-          "Assigned to PWD Lucknow Circle 2 inspector",
+          "Assigned to the regional PWD circle inspector",
           "Geo-tagged road coordinates sent for asphalt scheduling",
           "Scheduled review by Sub-Divisional Engineer"
         ];
@@ -321,7 +321,7 @@ export function AIPlayground() {
                   )}
                 </div>
                 <Textarea
-                  placeholder="e.g., Gomti Nagar Sector 4 me kal se bijli ki supply cut hai aur transformer se aawaz aa rahi hai..."
+                  placeholder="e.g., Mumbai Sector 4 me kal se bijli ki supply cut hai aur transformer se aawaz aa rahi hai..."
                   className={`min-h-[120px] text-sm rounded-xl resize-none ${
                     isAnalyzing ? "pointer-events-none opacity-60" : ""
                   } ${customText ? "ai-active-glow" : ""}`}

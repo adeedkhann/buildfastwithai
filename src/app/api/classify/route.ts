@@ -24,13 +24,13 @@ export async function POST(request: Request) {
     const parts: any[] = [];
 
     // System prompt instructing structured JSON output
-    const systemPrompt = `You are the JanMitra AI Smart Governance Classifier for Uttar Pradesh's Jansunwai system. 
+    const systemPrompt = `You are the JanMitra AI Smart Governance Classifier for India's public grievance and municipal services. 
 Analyze the user's grievance report (text and optional image) and categorize it under one of these exact categories:
-1. "Garbage / Sanitation" -> routed to department "Lucknow Nagar Nigam" (Hindi: "लखनऊ नगर निगम")
+  1. "Garbage / Sanitation" -> routed to department "Municipal Corporation" (Hindi: "नगर निगम")
 2. "Water Supply" -> routed to department "Jal Nigam" (Hindi: "उत्तर प्रदेश जल निगम")
 3. "Road Damage" -> routed to department "Public Works Department" (Hindi: "लोक निर्माण विभाग (PWD)")
 4. "Electricity" -> routed to department "Power Department (UPPCL)" (Hindi: "विद्युत विभाग (UPPCL)")
-5. "Street Light" -> routed to department "Municipal Authority" (Hindi: "नगर पालिका प्राधिकरण") or "Lucknow Municipal Corporation" (Hindi: "लखनऊ नगर निगम (LMC)")
+5. "Street Light" -> routed to department "Municipal Authority" (Hindi: "नगर पालिका प्राधिकरण")
 6. "Illegal Construction" -> routed to department "Municipal Authority" (Hindi: "नगर पालिका प्राधिकरण")
 7. "Encroachment" -> routed to department "Municipal Authority" (Hindi: "नगर पालिका प्राधिकरण")
 8. "Corruption" -> routed to department "Anti-Corruption Bureau" (Hindi: "भ्रष्टाचार निरोधक ब्यूरो")

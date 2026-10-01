@@ -59,19 +59,19 @@ const AnalyticsCharts = dynamic(() => import("@/components/admin/AnalyticsCharts
 
 const predictions = [
   {
-    area: "Rajajipuram",
+    area: "New Delhi",
     prediction: "Drainage overflow likely due to monsoon patterns",
     confidence: 86,
     risk: "high",
   },
   {
-    area: "Gomti Nagar",
+    area: "Mumbai",
     prediction: "Increased garbage complaints expected next week",
     confidence: 79,
     risk: "medium",
   },
   {
-    area: "Alambagh",
+    area: "Bengaluru",
     prediction: "Power grid strain — potential outage risk",
     confidence: 72,
     risk: "medium",
