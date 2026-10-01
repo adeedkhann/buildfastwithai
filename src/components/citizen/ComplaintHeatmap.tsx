@@ -79,7 +79,7 @@ export default function ComplaintHeatmap({
 
   return (
     <div className="relative w-full h-full min-h-[480px] rounded-2xl border border-border/30 overflow-hidden shadow-2xl bg-slate-950">
-      {/* CartoDB Dark Heatmap Canvas */}
+      {/* Official OpenStreetMap tiles; no API key or environment variable required. */}
       <MapContainer
         center={INDIA_CENTER}
         zoom={5}
@@ -88,8 +88,8 @@ export default function ComplaintHeatmap({
         zoomControl={false}
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
         {filteredComplaints.map((c) => {
