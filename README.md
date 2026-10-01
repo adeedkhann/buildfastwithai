@@ -5,74 +5,87 @@
 [![Tailwind CSS v4](https://img.shields.io/badge/Styling-Tailwind%20v4-38B2AC?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
 [![Gemini 2.5 Flash](https://img.shields.io/badge/AI_Engine-Gemini%202.5%20Flash-4285F4?style=for-the-badge&logo=googlegemini)](https://deepmind.google/technologies/gemini/)
 [![Leaflet GIS](https://img.shields.io/badge/GIS-React%20Leaflet-199900?style=for-the-badge&logo=leaflet)](https://leafletjs.com/)
+[![Build Fast with AI](https://img.shields.io/badge/Hackathon-Build%20Fast%20With%20AI-FF6B6B?style=for-the-badge)](https://buildfastwithai.com)
 
-> **JanMitra AI** (जनमित्र) is a premium, state-of-the-art citizen grievance redressal and predictive analytics platform engineered for modern municipal administrations in Uttar Pradesh. By combining Google Gemini-powered multimodal AI analysis, native speech-to-text voice transcriptions, dynamic spatial hotspot clustering, and role-based authentication gates, JanMitra AI eliminates wrong department assignments, administrative delays, and lack of accountability. It transforms standard public administration into a premium, secure, dark-themed SaaS-level governance HUD.
+> **JanMitra AI** (जनमित्र) is a state-of-the-art citizen grievance redressal and predictive analytics platform engineered for modern municipal administrations and smart cities across India. Developed for the **Build Fast with AI Hackathon**, JanMitra AI combines Google Gemini-powered multimodal AI analysis, native speech-to-text voice transcriptions, dynamic spatial hotspot clustering, and role-based authentication gates to eliminate misallocated departments, administrative bottlenecks, and lack of transparency.
 
 ---
 
 ## 🌟 Modern Core Modules
 
 ### 1. 🎙️ Citizen Engagement Portal
-*   **Multimodal AI Vision Scanning:** Citizens can upload photos of civic issues (e.g., garbage piles, burst pipes, broken streetlights) which are processed using the Gemini Vision model.
-*   **Speech-to-Text Audio Transcriptions:** Speak in Hindi, Urdu, Hinglish, or English. Dynamic custom speech-to-text transcribes conversational Hinglish and local slang into detailed, high-accuracy grievances.
-*   **Live Interactive Diagnostic HUD:** Watch the AI analyze your complaint in real time through an animated HUD tracking:
-    1. *Parsing and analyzing complaint text...*
-    2. *Detecting complaint category...*
-    3. *Assessing priority, urgency, and severity...*
-    4. *Routing to the appropriate municipal department...*
-    5. *Generating administrative officer summary...*
-*   **GIS Geolocation Pinning:** Real-time citizen location tracking via the browser Geolocation API with interactive OpenStreetMap integration, reverse-geocoding coordinates directly to localized zones (e.g. *Gomti Nagar, Lucknow*).
-*   **Holographic Tracking Timeline:** Complete transparency from `Submitted ➔ AI Analyzing ➔ Department Assigned ➔ Officer Reviewing ➔ Action In Progress ➔ Resolved`.
-*   **Premium Color-Coded Priority Cards:** Redesigned the priority selector with card-styled elements (Auto, Normal, Urgent, Critical) containing smooth micro-animations and glowing gradient accent lines.
-*   **Centered Desktop Tab Navigation:** Completely centered horizontal tabs List (`New Complaint`, `My Complaints`, `Track Complaint`) featuring Indigo-to-Violet gradient active indicators, glowing dropshadows, and custom icons to separate context beautifully.
-*   **Smart Citizen Clean-Navigation:** Hides administrative and officer options when signed in as a citizen, showing only citizen-specific actions (File Complaint, Logout) for a clean dashboard view.
 
-### 2. 👮 Officer Command Console
-*   **Automated Department Queues:** Custom-routed task dashboards for Nagar Nigam, Jal Nigam, PWD, and UPPCL officers, built with advanced search, category filtration, and sorting.
-*   **Active Hotline & Action Alerts:** Visually distinct glowing alert banners for urgent complaints that demand instant administrative field action.
-*   **Consolidated Ticket Merging:** Prevent duplicate dispatches by merging overlapping nearby complaints from identical geographic blocks into a single parent ticket.
-*   **Dynamic Response & Resolution Notes:** Officers can provide custom bilingual updates (English & Hindi) which instantly synchronize to the citizen's tracking portal.
-
-### 3. 🔒 Secure Database-Backed Citizen Authentication
-*   **Citizen Sign-Up & Login Gates:** Citizen user registration and authentication checks are verified directly against a persistent cloud database table (`public.citizens`), protecting data integrity.
-*   **Cryptographic Accessway Grid:** A gorgeous, glassmorphic role selection grid (`/login`) featuring animated overlays, default credentials banners, and password decryption HUD accents for officers/admins.
-*   **Active Session Badges:** Dashboard views display pulsing green `Active Session` indicators, bypassing forms to let users resume cached sessions.
-*   **Cross-Tab Session Synchronization:** Custom Storage event triggers synchronize the Navbar status instantly across all browser tabs on login and logout.
-
-### 4. 📊 Admin Console & Predictive Governance
-*   **Rich Recharts Visualizations:** Modern administrative telemetry showing active area charts (monthly trends), pie charts (category breakdowns), and performance bar charts.
-*   **Dynamic Spatial Hotspot Clustering:** Grievances in identical areas automatically group to flag structural civic bottlenecks.
-*   **Inter-Department Efficiency Matrix:** Visual performance statistics tracking average resolution times (SLAs) and department-specific resolution ratios.
-
-### 5. ☁️ Supabase Cloud & PostgreSQL Database Integration
-*   **Relational Storage Layer:** Migrated from volatile browser memory to a persistent Supabase PostgreSQL cloud database, keeping all states dynamically synced across multiple client connections.
-*   **Robust Table Relational Schemas:**
-    *   `public.citizens`: Holds verified user profiles (names, emails, phones, and passwords).
-    *   `public.complaints`: Stores all civic grievances (visual attachments, coordinates, AI routing data, urgency, and nodal officer details).
-    *   `public.complaint_updates`: Manages timeline updates linked as foreign key rows to parent complaints.
-*   **Row-Level Security (RLS) Policies:** Enabled secure RLS access rules for selecting, inserting, and updating data, securing database connections against external unauthorized edits.
+- **Multimodal AI Vision Scanning:** Citizens can upload photos of civic issues (e.g., garbage dumps, burst water mains, broken streetlights, road potholes) which are instantly analyzed by Google Gemini Vision.
+- **Vernacular Speech-to-Text Voice Transcriptions:** Speak in Hindi, English, Hinglish, or regional dialects. Custom speech-to-text transcribes conversational audio and local slang into structured, high-accuracy civic grievances.
+- **Live Interactive Diagnostic HUD:** Real-time visual tracking of AI analysis:
+  1. *Parsing and analyzing complaint text...*
+  2. *Detecting complaint category...*
+  3. *Assessing priority, urgency, and severity...*
+  4. *Routing to appropriate municipal department...*
+  5. *Generating administrative officer summary...*
+- **GIS Geolocation Pinning:** Automatic citizen location tracking via the browser Geolocation API integrated with OpenStreetMap, reverse-geocoding coordinates directly to localized urban zones.
+- **Holographic Tracking Timeline:** Complete end-to-end transparency: `Submitted ➔ AI Analyzing ➔ Department Assigned ➔ Officer Reviewing ➔ Action In Progress ➔ Resolved`.
+- **Color-Coded Urgency Selector:** Interactive priority cards (Auto, Normal, Urgent, Critical) with smooth micro-animations and subtle status indicators.
+- **Centered Desktop Navigation:** Clean horizontal navigation (`New Complaint`, `My Complaints`, `Track Complaint`) with custom icons and gradient indicators.
 
 ---
 
-## 🤖 AI Agent Autonomous Follow-up Feed (`AIAgentFollowUpPanel`)
+### 2. 👮 Officer Command Console
 
-JanMitra AI implements an autonomous nodal agent follow-up simulation engine that performs dynamic background audits, status pings, and notification updates over a 5-day lifecycle:
+- **Automated Department Queues:** Custom-routed action dashboards for Municipal Corporations, Water Authorities, Public Works Departments (PWD), and Electricity Boards.
+- **Active Hotline & Action Alerts:** Visually prominent alert banners highlighting urgent grievances that demand immediate field inspection.
+- **Consolidated Ticket Merging:** Prevents redundant dispatches by grouping overlapping complaints from identical geographic blocks into a single parent ticket.
+- **Bilingual Resolution & Feedback Notes:** Officers provide updates in English & Hindi, instantly synced to the citizen's live tracking portal.
 
-| Timeline Segment | Action Title | Bilingual Output Description | Visual Theme Indicator |
-| :--- | :--- | :--- | :--- |
-| **Day 1 (0h)** | **Grievance Auto-Classification** | AI parses user's complaint text, resolves category classification, and routes to correct municipal department. | 🟣 `Purple / Bot` (Success) |
-| **Day 1 (0.1h)** | **AI Vision Scan & Evidence Extract** | Photo attachment processed. Confirmed visual evidence of civic issue. Metadata tagged for officer's inspection. | 🟢 `Green / Zap` (Success) |
-| **Day 1 (0.5h)** | **Vernacular SMS Status Sent** | Citizens receive status sms updates in local dialect: `"आपकी शिकायत विभाग को भेज दी गई है..."` | 🔵 `Blue / Msg` (Info) |
-| **Day 2 (24h)** | **Autonomous Officer Push Alert** | Tracks SLA. Dispatches high-priority reminder alerts to assigned officer to ensure resolution within timeline. | 🟡 `Amber / Clock` (Action) |
-| **Day 3 (48h)** | **SLA Threshold Audit & Warning** | If resolution isn't uploaded, the agent generates automated warnings and escalates to ward commissioner. | 🔴 `Red / Shield` (Warning) |
-| **Day 4 (72h)** | **Field Progress Verified** | Telemetry captured: ground progress initiated on-site. Citizen notified of live updates. | 🔵 `Cyan / Zap` (Action) |
-| **Day 5 (96h)** | **AI Vision Resolution Verification** | Officer resolution proof photo analyzed. Confirms issue is resolved. Dispatches final report to citizen. | 🟢 `Green / Check` (Success) |
+---
+
+### 3. 🔒 Secure Database-Backed Citizen Authentication
+
+- **Database-Backed Access Gate:** User registration and credentials verified directly against a persistent Supabase PostgreSQL database (`public.citizens`).
+- **Role Selection Grid (`/login`):** Modern glassmorphic accessway portal featuring distinct role cards for Citizens, Nodal Officers, and System Administrators.
+- **Active Session Persistence:** Automatic session caching with pulsing `Active Session` indicators to ensure uninterrupted navigation.
+- **Cross-Tab Synchronization:** Instant state sync across multiple browser tabs on authentication events.
+
+---
+
+### 4. 📊 Admin Console & Predictive Governance
+
+- **Telemetry & Analytics Visualizations:** Rich interactive area charts (monthly grievance trends), pie charts (category distribution), and bar charts (department resolution ratios).
+- **Dynamic Spatial Hotspot Clustering:** Grievances reported in the same geographical locality auto-cluster to highlight critical civic infrastructure bottlenecks.
+- **Inter-Department SLA Efficiency Matrix:** Real-time performance tracking monitoring average resolution turnarounds (SLAs) and department-wise closure rates.
+
+---
+
+### 5. ☁️ Supabase Cloud & PostgreSQL Database Integration
+
+- **Relational Cloud Storage:** Powered by Supabase PostgreSQL for multi-client state persistence.
+- **Core Schemas:**
+  - `public.citizens`: Verified user profiles (names, emails, phones, and credentials).
+  - `public.complaints`: Full grievance repository (media URLs, coordinates, AI routing metadata, priority levels, and assigned officers).
+  - `public.complaint_updates`: Linked timeline rows maintaining historical audit logs.
+- **Row-Level Security (RLS):** RLS policies applied across tables to enforce secure dataset isolation.
+
+---
+
+## 🤖 AI Nodal Agent Autonomous Follow-Up (`AIAgentFollowUpPanel`)
+
+JanMitra AI simulates an autonomous background auditing agent that monitors ticket lifecycles and triggers automated actions across a 5-day SLA timeline:
+
+| Timeline Segment | Action Title | Bilingual Description | Visual Theme Indicator |
+|:---|:---|:---|:---|
+| **Day 1 (0h)** | **Grievance Auto-Classification** | AI parses user text, assigns precise category, and routes to correct municipal department. | 🟣 `Purple / Bot` (Success) |
+| **Day 1 (0.1h)** | **AI Vision Scan & Evidence Extract** | Photo attachment processed. Confirmed visual evidence tagged for officer inspection. | 🟢 `Green / Zap` (Success) |
+| **Day 1 (0.5h)** | **Vernacular SMS Alert** | Citizen receives instant status updates in local language/dialect. | 🔵 `Blue / Msg` (Info) |
+| **Day 2 (24h)** | **Autonomous Officer Push Alert** | Monitors SLA progress. Sends high-priority reminder alerts to assigned officer. | 🟡 `Amber / Clock` (Action) |
+| **Day 3 (48h)** | **SLA Threshold Escalation** | Escalates unhandled tickets automatically to ward/city commissioner. | 🔴 `Red / Shield` (Warning) |
+| **Day 4 (72h)** | **Field Progress Verification** | Ground telemetry captured; progress updates dispatched to citizen. | 🔵 `Cyan / Zap` (Action) |
+| **Day 5 (96h)** | **AI Resolution Verification** | Analyzes officer's resolution proof photo to confirm issue closure. | 🟢 `Green / Check` (Success) |
 
 ---
 
 ## 🚀 Dynamic Spatial Hotspot Clustering Engine
 
-JanMitra AI runs an autonomous spatial clustering algorithm in the local storage data layer to identify regional systemic failures:
+JanMitra AI runs an autonomous spatial clustering algorithm to detect localized civic infrastructural failures:
 
 ```
 [ Grievance Submitted ]
@@ -85,215 +98,160 @@ JanMitra AI runs an autonomous spatial clustering algorithm in the local storage
          │
          ▼
 [ Is cluster size >= 2 active complaints? ]
-       ├── Yes ➔ Mark both as [HOTSPOT] ➔ Elevate Priority to [HIGH] ➔ Sort to Top of Officer Queue
-       └── No  ➔ Standard Queue Sorting & Priority
+     ├── Yes ➔ Mark both as [HOTSPOT] ➔ Elevate Priority to [HIGH] ➔ Bubble to Top of Officer Queue
+     └── No  ➔ Standard Queue Sorting & Priority
 ```
 
-### Algorithmic Highlights
-1.  **Dynamic Promotion:** The moment two active (non-resolved) complaints of the same category are filed in the same locality (e.g. *Aliganj, Lucknow*), the clustering engine groups them. Their status is dynamically upgraded to `isHotspot: true` and their priority elevated to `high`.
-2.  **SLA Bubble Sorting:** Hotspot complaints bypass standard chronological lists, automatically bubbling up to the absolute top of the Officer Command Console queues with a distinct crimson pulsing indicator.
-3.  **Dynamic Cluster Shrinkage:** Once an officer resolves one of the active hotspot complaints, the clustering size shrinks below the threshold of 2. The remaining active complaint gracefully loses its hotspot tag and returns to its standard queue priority.
+### Key Algorithmic Rules:
+
+- **Dynamic Promotion:** If two or more active (unresolved) complaints of the same category are reported in the same block, they are flagged as `isHotspot: true` and elevated to High Priority.
+- **SLA Queue Prioritization:** Hotspot tickets bypass standard chronological lists and bubble up to the top of the Officer Command Console.
+- **Cluster Shrinkage:** As officers resolve individual tickets within a cluster, the cluster size automatically shrinks back below the threshold, returning remaining tickets to standard priority queues.
 
 ---
 
-## 💻 Google Gemini AI Heuristics Suite
-
-JanMitra AI leverages standard fallbacks to run smoothly in offline/demo mode, but activates full multimodal capability when configured with a `GEMINI_API_KEY`:
+## 💻 Google Gemini AI Heuristics Engine
 
 ### A. Multimodal Grievance Classifier (`/api/classify`)
-Integrates the state-of-the-art **Gemini 2.5 Flash** model to analyze public complaints:
-*   **Visual Inputs:** Analyzes base64 image data to identify structural damage, waste dumps, or electrical hazards.
-*   **Text & Slang Comprehension:** Understands standard English, Devanagari Hindi, Urdu, and Hinglish.
-*   **Structured Output:** Enforces strict `responseMimeType: "application/json"` formats to output category routing, bilingual summaries, priority levels, and expected SLA days:
-    ```json
-    {
-      "category": "Water Supply",
-      "categoryHi": "जल आपूर्ति",
-      "priority": "high",
-      "urgency": "Requires immediate attention",
-      "department": "Jal Nigam",
-      "departmentHi": "उत्तर प्रदेश जल निगम",
-      "summary": "Water pipeline burst reported in Gomti Nagar causing localized flooding.",
-      "summaryHi": "गोमती नगर में पानी की पाइपलाइन फटने की खबर है जिससे स्थानीय स्तर पर बाढ़ आ गई है।",
-      "confidence": 0.98,
-      "predictedResolutionDays": 3
-    }
-    ```
 
-### B. Speech-to-Text Transcription (`/api/transcribe`)
-Allows citizens to record raw audio clips directly inside the browser. The Gemini model parses raw audio to:
-*   Accurately transcribe Hinglish, Hindi, and local dialects.
-*   Preserve municipal landmark and location names exactly as spoken (e.g., *Mithai Chauraha*, *Hazratganj*).
-*   Eliminate background noise and ambient hums.
+Integrates Gemini 2.5 Flash to evaluate citizen reports:
+
+- **Visual Inputs:** Inspects uploaded base64 images for structural issues, refuse accumulation, or electrical hazards.
+- **Multilingual Analysis:** Comprehends English, Devanagari Hindi, Urdu, and Hinglish.
+- **Structured Output:** Returns strict JSON payloads specifying category routing, bilingual summaries, urgency metrics, and SLA targets:
+
+```json
+{
+  "category": "Water Supply",
+  "categoryHi": "जल आपूर्ति",
+  "priority": "high",
+  "urgency": "Requires immediate attention",
+  "department": "Water Works Department",
+  "departmentHi": "जल कल विभाग",
+  "summary": "Water pipeline burst reported in Sector 4 causing localized flooding.",
+  "summaryHi": "सेक्टर 4 में पानी की पाइपलाइन फटने की खबर है जिससे स्थानीय जलभराव हो गया है।",
+  "confidence": 0.98,
+  "predictedResolutionDays": 3
+}
+```
+
+### B. Vernacular Speech-to-Text (`/api/transcribe`)
+
+Allows citizens to record voice notes directly in the browser:
+
+- Accurately parses Hinglish, Hindi, and local dialects.
+- Preserves landmark and location details as spoken.
+- Filters ambient audio noise.
 
 ---
 
-## 🔑 Demo Credentials Directory
+## 🔑 Portal Access Directory
 
-To test the secure administrative dashboard portals, utilize the following official credentials. The credentials are listed inside interactive helper cards on the `/login` portal:
+To test the application portals, use the following credentials available on the `/login` portal:
 
 | Portal Accessway | Route | Authorized Email | Secret Passcode / Key |
-| :--- | :--- | :--- | :--- |
-| **Officer Command Console** | `/officer` | `officer@gmail.com` OR `officers@gmail.com` | `1122` |
-| **Admin Panel & Secretariat** | `/admin` | `admin@gmail.com` | `1234` |
-| **Citizen Portal (Public)** | `/citizen` | *No Credentials Required* | *Open Access* |
-
----
-
-## 🔄 System Flowchart & Routing Logic
-
-```mermaid
-graph TD
-    %% Citizen Actions
-    A[Citizen Portal] -->|Voice, Photo, or Text| B(Interactive Complaint Form)
-    B -->|Gemini 2.5 Flash Heuristics| C{JanMitra AI API}
-    
-    %% AI Pipeline
-    C -->|Multimodal Image Analysis| D[Grievance Category Routing]
-    C -->|Bilingual Natural Summarizer| E[SLA Resolution & Urgency Heuristics]
-    C -->|Speech-to-Text Engine| F[Spam Risk Analysis]
-    
-    %% Storage & Clustering
-    D & E & F -->|Store in Dynamic DB| G[Active Local Storage Data Layer]
-    G -->|Spatial Clustering Check| H{Active duplicates in same block?}
-    H -->|Yes| I[Flag isHotspot ➔ Elevate Priority to High]
-    H -->|No| J[Standard Heuristic Sorting]
-    
-    %% Officers
-    I & J -->|Bubble Up Top| K[Officer Console Queue]
-    K -->|Actions: Dispatch, Review, Resolve| L[Dynamic Tracking Timeline]
-    L -->|Bilingual Status Sync| A
-    
-    %% Administration
-    K -->|Telemetry Aggregator| M[Admin Analytics Panel]
-    M -->|Recharts Dashboard| N[Seasonal Forecasts & Department Ranks]
-```
+|:---|:---|:---|:---|
+| Officer Command Console | `/officer` | officer@gmail.com | 1122 |
+| Admin Panel & Secretariat | `/admin` | admin@gmail.com | 1234 |
+| Citizen Portal (Public) | `/citizen` | No Credentials Required | Open Access |
 
 ---
 
 ## 📂 Project Directory Structure
 
-```bash
+```
 janmitra-ai/
 ├── src/
-│   ├── app/                      # Next.js 15/16 App Router Configuration
-│   │   ├── admin/                # Admin Panel (Telemetry, Charts, Predictive Engine)
-│   │   ├── api/                  # Server-Side API Handlers
-│   │   │   ├── classify/         # Multimodal Gemini Grievance Categorization API
-│   │   │   └── transcribe/       # Speech-to-Text Gemini Transcription API
-│   │   ├── citizen/              # Citizen Portal (Timeline, Form, Geolocation)
-│   │   ├── help/                 # Help and FAQ Section
-│   │   ├── login/                # Role Selection Grid & Login Gateways
-│   │   ├── officer/              # Officer Dashboard (Command Queues, Map, Actions)
-│   │   ├── privacy/              # Privacy Policy Page
-│   │   ├── terms/                # Terms of Service Page
-│   │   ├── globals.css           # Premium styling sheet with dark-first variables
-│   │   ├── layout.tsx            # Global HTML configuration & Tooltip Providers
-│   │   └── page.tsx              # Brand portal Landing Page
+│   ├── app/                 # Next.js App Router Configuration
+│   │   ├── admin/           # Administrative Panel & Telemetry Charts
+│   │   ├── api/             # Serverless API Routes (/classify, /transcribe, /send-email)
+│   │   ├── citizen/         # Citizen Portal (Form, Geolocation, Timeline)
+│   │   ├── help/            # Citizen Support & FAQ Section
+│   │   ├── login/           # Authentication Gateways & Role Cards
+│   │   ├── officer/         # Nodal Officer Command Console & Live Telemetry Map
+│   │   ├── privacy/         # Privacy Policy
+│   │   ├── terms/           # Terms of Service
+│   │   ├── globals.css      # Custom Styling & Dark Theme Variables
+│   │   ├── layout.tsx       # Root Layout & Global Tooltip Providers
+│   │   └── page.tsx         # Product Landing Page
 │   ├── components/
-│   │   ├── admin/                # Recharts administrative data layouts
-│   │   ├── citizen/              # Complaint input panels & timeline graphics
-│   │   ├── landing/              # Sleek interactive Hero, CTA, & feature sections
-│   │   ├── shared/               # Global components (Glassmorphic Navbar, Footer, ThemeToggle)
-│   │   └── ui/                   # Shared primitive components (Buttons, Badges, Cards)
+│   │   ├── admin/           # Administrative Dashboard Components
+│   │   ├── citizen/         # Grievance Input Form & Tracking Components
+│   │   ├── landing/         # Landing Page Visual Sections
+│   │   ├── shared/          # Navigation, Footers, Theme Toggles
+│   │   └── ui/              # Reusable UI Primitives
 │   ├── data/
-│   │   ├── complaints.ts         # Mock complaints base seed database
-│   │   └── departments.ts        # Double-weighted keyword registry & department rosters
+│   │   ├── complaints.ts    # Seed Data Repository
+│   │   └── departments.ts   # Department Mappings & Heuristic Keywords
 │   ├── lib/
-│   │   ├── ai.ts                 # Local fallback keyword-weighted AI matching logic
-│   │   ├── complaints.ts         # Browser query simulation & Spatial Clustering algorithm
-│   │   └── utils.ts              # Tailwind CSS styling utilities
+│   │   ├── ai.ts            # Fallback Classifier Heuristics
+│   │   ├── complaints.ts    # Spatial Clustering & Query Utilities
+│   │   └── utils.ts         # Utility Helper Functions
 │   └── types/
-│       └── index.ts              # Global TypeScript Interface Definitions
-│   └── scripts/
-│       └── verify_features.ts    # Node validation script for checking clusters and notification queues
-├── public/                       # Audio icons, SVG icons, and static vector assets
-├── package.json                  # Next.js dependencies and scripts configuration
-└── tsconfig.json                 # TypeScript compiler configuration
+│       └── index.ts         # Global TypeScript Definitions
+├── public/                  # Static Assets, Icons, and Media
+├── .env.local               # Environment Configurations
+├── package.json             # Dependencies and Execution Scripts
+└── tsconfig.json            # TypeScript Configuration
 ```
 
 ---
 
 ## 💻 Tech Stack & Tooling
 
-*   **Framework:** [Next.js 15/16](https://nextjs.org/) (App Router)
-*   **Runtime Environment:** [React 19](https://react.dev/)
-*   **Styling Engine:** [Tailwind CSS v4](https://tailwindcss.com/)
-*   **Animation System:** [Framer Motion](https://www.framer.com/motion/)
-*   **Administrative Telemetry:** [Recharts](https://recharts.org/)
-*   **Interactive Maps:** [React Leaflet](https://react-leaflet.js.org/) & [Leaflet](https://leafletjs.com/)
-*   **AI Models:** Google [Gemini 2.5 Flash](https://deepmind.google/technologies/gemini/)
+- **Framework:** Next.js 15/16 (App Router)
+- **Runtime:** React 19
+- **Styling Engine:** Tailwind CSS v4
+- **Animations:** Framer Motion
+- **Telemetry & Visualization:** Recharts
+- **GIS Maps:** OpenStreetMap & React Leaflet
+- **AI Engine:** Google Gemini 2.5 Flash
+- **Database & Auth:** Supabase PostgreSQL
+- **Email Gateway:** Resend API
 
 ---
 
-## 🛠️ Installation & Developer Quickstart
-
-To run the application locally in development mode, follow these simple steps:
+## 🛠️ Local Development Quickstart
 
 ### 1. Clone the Repository
+
 ```bash
-git clone https://github.com/theabhishek4u/JanMitra-AI.git
-cd janmitra-ai
+git clone https://github.com/adeedkhaan/buildfastwithai.git
+cd buildfastwithai
 ```
 
 ### 2. Configure Environment Variables
+
 Create a `.env.local` file in the root directory:
+
 ```env
-# Get your API key from Google AI Studio: https://aistudio.google.com/
+# Google Gemini API Key
 GEMINI_API_KEY=your_gemini_api_key_here
 
-# Supabase database config settings
-NEXT_PUBLIC_SUPABASE_URL=https://fqqbiwhwpljynpcekpnh.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_GrFh1xfTpY0o8EFTpl_rlQ_M_R7yrxh
+# Supabase Configurations
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+
+# Resend API Key
+RESEND_API_KEY=your_resend_api_key_here
 ```
 
-### 3. Initialize Supabase PostgreSQL Schemas & Seed Data
-Initialize your Supabase database instance with schemas, tables, RLS policies, and telemetry mock values:
-```bash
-# 1. Provision the primary grievances and updates tables
-node create-tables.js
+### 3. Install Dependencies
 
-# 2. Provision the citizen database credentials table
-node src/scripts/setup_citizens_table.js
-
-# 3. Seed complaints history and timeline logs
-node setup-supabase.js
-```
-
-### 4. Install Dependencies
 ```bash
 npm install
 ```
 
-### 5. Run the Development Server
+### 4. Launch Development Server
+
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) inside your browser. Navigate using the Navbar links or directly view protected pathways to experience the secure redirects.
-
-Alternatively, you can visit the live application at [https://jan-mitra-ai-opal.vercel.app/](https://jan-mitra-ai-opal.vercel.app/).
-
-### 6. Key Routes & Pathways
-*   **Landing Page:** `/`
-*   **Citizen Dashboard:** `/citizen`
-*   **Officer Portal:** `/officer`
-*   **Admin Console:** `/admin`
-
-### 7. Verify Feature Suite
-Run the pre-configured feature validation test suite to verify the spatial clustering, priority promotions, notification dispatches, and resolved hotspot shrinkage operations:
-```bash
-npx tsx src/scripts/verify_features.ts
-```
+Open `http://localhost:3000` in your browser.
 
 ---
 
-## ⚙️ Customization & Extensibility
+## 🎯 Built For
 
-### Extending Municipal Departments
-To add new departments or tweak classification keywords, update [src/data/departments.ts](file:///c:/My%20Project/Agentic%20Premier%20League%20(APL)/janmitra-ai/src/data/departments.ts). The Gemini Vision engine automatically inherits the updated system prompts at runtime.
-
-### Tweak Spatial Clustering Rules
-To change the hotspot clustering threshold (default: `>= 2` duplicate active reports), adjust the parameter inside [src/lib/complaints.ts](file:///c:/My%20Project/Agentic%20Premier%20League%20(APL)/janmitra-ai/src/lib/complaints.ts#L126).
-#   b u i l d f a s t w i t h a i  
- 
+Developed with ❤️ for **Build Fast with AI Hackathon**.
