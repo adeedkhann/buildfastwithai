@@ -46,6 +46,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const cacheRef = useRef<Record<string, string>>({});
   const cacheReadyRef = useRef(false);
   const pendingRequestsRef = useRef<Set<string>>(new Set());
+  const failedRequestsRef = useRef<Map<string, number>>(new Map());
   const pendingNetworkCountRef = useRef(0);
   const loaderUpdateScheduledRef = useRef(false);
   const batchQueueRef = useRef<Map<string, { sourceLang: string; targetLang: string; text: string }>>(new Map());
@@ -58,6 +59,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       const legacyCache = window.localStorage.getItem(LEGACY_STORAGE_KEY_CACHE);
       const parsedLegacy = legacyCache ? JSON.parse(legacyCache) : {};
       cacheRef.current = { ...parsedLegacy, ...loadBhashiniCache() };
+      Object.entries(cacheRef.current).forEach(([key, value]) => {
+        const firstSeparator = key.indexOf(":");
+        const secondSeparator = key.indexOf(":", firstSeparator + 1);
+        const source = key.slice(0, firstSeparator);
+        const target = key.slice(firstSeparator + 1, secondSeparator);
+        const original = key.slice(secondSeparator + 1);
+        if (source && target && source !== target && value.trim() === original.trim()) {
+          delete cacheRef.current[key];
+        }
+      });
       saveBhashiniCache(cacheRef.current);
       cacheReadyRef.current = true;
       setCacheVersion((version) => version + 1);
@@ -105,6 +116,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const langObj = getBhashiniLanguage(language);
     const code = langObj.isoCode;
     if (code === currentLanguage) return;
+    failedRequestsRef.current.clear();
 
     // Show the loader immediately for uncached language switches. Any queued
     // batch will keep it alive; cached/local strings never block the UI.
@@ -159,15 +171,20 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         });
 
         if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-        const data = (await response.json()) as { text?: string | string[]; translations?: string[] };
+        const data = (await response.json()) as { text?: string | string[]; translations?: string[]; isFallback?: boolean };
         const result = Array.isArray(data.translations) ? data.translations[0] : Array.isArray(data.text) ? data.text[0] : data.text || text;
 
-        cacheRef.current[cacheKey] = result;
-        persistCache();
-        setCacheVersion((v) => v + 1);
+        if (data.isFallback || result === text) {
+          failedRequestsRef.current.set(cacheKey, Date.now());
+        } else {
+          cacheRef.current[cacheKey] = result;
+          persistCache();
+          setCacheVersion((v) => v + 1);
+        }
         return result;
       } catch (err) {
         console.warn("[LanguageContext] translateText failed, returning fallback:", err);
+        failedRequestsRef.current.set(cacheKey, Date.now());
         return text;
       } finally {
         pendingNetworkCountRef.current = Math.max(0, pendingNetworkCountRef.current - 1);
@@ -219,13 +236,21 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             });
 
             if (!response.ok) throw new Error(`Batch translation failed: ${response.status}`);
-            const data = (await response.json()) as { text: string[] | string };
-            const results = Array.isArray(data.text) ? data.text : [data.text];
+            const data = (await response.json()) as { text?: string[] | string; translations?: string[]; isFallback?: boolean };
+            const results = Array.isArray(data.translations)
+              ? data.translations
+              : Array.isArray(data.text)
+                ? data.text
+                : [data.text || ""];
 
             uniqueTexts.forEach((originalText, idx) => {
               const translated = results[idx] || originalText;
               const cacheKey = createBhashiniCacheKey(group.sourceLang, group.targetLang, originalText);
-              cacheRef.current[cacheKey] = translated;
+              if (data.isFallback || translated === originalText) {
+                failedRequestsRef.current.set(cacheKey, Date.now());
+              } else {
+                cacheRef.current[cacheKey] = translated;
+              }
               pendingRequestsRef.current.delete(cacheKey);
             });
           } catch (error) {
@@ -233,6 +258,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             uniqueTexts.forEach((originalText) => {
               const cacheKey = createBhashiniCacheKey(group.sourceLang, group.targetLang, originalText);
               pendingRequestsRef.current.delete(cacheKey);
+              failedRequestsRef.current.set(cacheKey, Date.now());
             });
           }
         }),
@@ -272,6 +298,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       const cacheKey = createBhashiniCacheKey(sourceLanguage, currentLanguage, trimmed);
       if (cacheRef.current[cacheKey]) {
         return cacheRef.current[cacheKey];
+      }
+      const failedAt = failedRequestsRef.current.get(cacheKey);
+      if (failedAt && Date.now() - failedAt < 30_000) {
+        return text;
       }
 
       // 4. If not in cache, queue for asynchronous Bhashini live translation
