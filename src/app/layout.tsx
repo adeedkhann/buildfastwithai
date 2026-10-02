@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { DemoTour } from "@/components/landing/DemoTour";
 import { AIAssistantWidget } from "@/components/shared/AIAssistantWidget";
 import { LanguageProvider } from "@/components/shared/LanguageContext";
+import { LanguageLoader } from "@/components/shared/LanguageLoader";
 import "./globals.css";
 
 const inter = Inter({
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans antialiased">
         <TooltipProvider>
           <LanguageProvider>
+            <LanguageLoader />
             {children}
             <Suspense fallback={null}>
               <DemoTour />

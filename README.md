@@ -234,6 +234,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 
 # Resend API Key
 RESEND_API_KEY=your_resend_api_key_here
+
+# Bhashini API
+BHASHINI_UDYAT_KEY=0101758b45-7ce4-4441-aff2-32d2d89b8a4e
+BHASHINI_USER_ID=medikiosk
+BHASHINI_INFERENCE_KEY=2rbL-jT3zSqX6bZrxG3oKU_mOxCRwS-D5M82vjYYfIHZngAHTbGcIBksgzcG96PH
+
 ```
 
 ### 3. Install Dependencies

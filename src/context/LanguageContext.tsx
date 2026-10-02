@@ -46,8 +46,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const cacheRef = useRef<Record<string, string>>({});
   const cacheReadyRef = useRef(false);
   const pendingRequestsRef = useRef<Set<string>>(new Set());
+  const pendingNetworkCountRef = useRef(0);
+  const loaderUpdateScheduledRef = useRef(false);
   const batchQueueRef = useRef<Map<string, { sourceLang: string; targetLang: string; text: string }>>(new Map());
   const batchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const languageLoaderTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize localStorage cache on mount
   useEffect(() => {
@@ -101,6 +104,24 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setCurrentLanguage = (language: string) => {
     const langObj = getBhashiniLanguage(language);
     const code = langObj.isoCode;
+    if (code === currentLanguage) return;
+
+    // Show the loader immediately for uncached language switches. Any queued
+    // batch will keep it alive; cached/local strings never block the UI.
+    const knownSourceTexts = Object.values(UI_TRANSLATIONS.en);
+    const isWarm = code === "en" || knownSourceTexts.every((sourceText) => {
+      const local = findLocalTranslationBySource(sourceText, code);
+      const cacheKey = createBhashiniCacheKey("en", code, sourceText);
+      return Boolean(local || cacheRef.current[cacheKey]);
+    });
+    setIsTranslating(!isWarm);
+    if (languageLoaderTimeoutRef.current) clearTimeout(languageLoaderTimeoutRef.current);
+    languageLoaderTimeoutRef.current = setTimeout(() => {
+      if (pendingNetworkCountRef.current === 0 && batchQueueRef.current.size === 0) {
+        setIsTranslating(false);
+      }
+    }, 250);
+
     setCurrentLanguageState(code);
     window.localStorage.setItem(STORAGE_KEY_LANGUAGE, code);
     document.documentElement.lang = code;
@@ -124,6 +145,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         return localDirect;
       }
 
+      pendingNetworkCountRef.current += 1;
       setIsTranslating(true);
       try {
         const response = await fetch("/api/bhashini/translate", {
@@ -148,7 +170,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         console.warn("[LanguageContext] translateText failed, returning fallback:", err);
         return text;
       } finally {
-        setIsTranslating(false);
+        pendingNetworkCountRef.current = Math.max(0, pendingNetworkCountRef.current - 1);
+        if (pendingNetworkCountRef.current === 0 && batchQueueRef.current.size === 0) {
+          setIsTranslating(false);
+        }
       }
     },
     [currentLanguage],
@@ -171,6 +196,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       groups.get(groupKey)!.texts.push(item.text);
     }
 
+    pendingNetworkCountRef.current += 1;
     setIsTranslating(true);
 
     try {
@@ -215,7 +241,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       persistCache();
       setCacheVersion((v) => v + 1);
     } finally {
-      setIsTranslating(false);
+      pendingNetworkCountRef.current = Math.max(0, pendingNetworkCountRef.current - 1);
+      if (pendingNetworkCountRef.current === 0 && batchQueueRef.current.size === 0) {
+        setIsTranslating(false);
+      }
     }
   }, []);
 
@@ -248,6 +277,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       // 4. If not in cache, queue for asynchronous Bhashini live translation
       if (!pendingRequestsRef.current.has(cacheKey)) {
         pendingRequestsRef.current.add(cacheKey);
+        // t() can run during JSX evaluation. Defer the loader update so it
+        // never updates LanguageProvider during a child render.
+        if (!loaderUpdateScheduledRef.current) {
+          loaderUpdateScheduledRef.current = true;
+          setTimeout(() => {
+            loaderUpdateScheduledRef.current = false;
+            if (pendingRequestsRef.current.size > 0) {
+              setIsTranslating(true);
+            }
+          }, 0);
+        }
         batchQueueRef.current.set(cacheKey, {
           sourceLang: sourceLanguage,
           targetLang: currentLanguage,
