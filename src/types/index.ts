@@ -121,6 +121,8 @@ export interface Complaint {
   titleHi: string;
   description: string;
   descriptionHi: string;
+  originalText?: string;
+  translatedText?: string;
   category: string;
   categoryHi: string;
   priority: Priority;

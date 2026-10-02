@@ -32,19 +32,16 @@ import { addComplaint } from "@/lib/complaints";
 import { getTokenState, consumeToken, isEmergencyComplaint } from "@/lib/tokenSystem";
 import { getAuthSession } from "@/lib/auth";
 import type { AIClassification, Complaint } from "@/types";
+import { useLanguage } from "@/components/shared/LanguageContext";
 
 export function ComplaintForm({ 
-  language = "en",
-  onLanguageChange,
   onComplaintCreated,
   onTrack
 }: { 
-  language?: "en" | "hi";
-  onLanguageChange?: (lang: "en" | "hi") => void;
   onComplaintCreated?: (complaint: Complaint) => void;
   onTrack?: (id: string) => void;
 }) {
-  const isHi = language === "hi";
+  const { currentLanguage, translateText, t } = useLanguage();
   const [step, setStep] = useState<"input" | "processing" | "result">("input");
   const [text, setText] = useState("");
   const [name, setName] = useState("");
@@ -103,17 +100,18 @@ export function ComplaintForm({
   // Clean up recognition and listen for demo autofill events
   useEffect(() => {
     const handleAutofill = () => {
-      const mockText = isHi
+      const isHindi = currentLanguage === "hi";
+      const mockText = isHindi
         ? "गोमती नगर में मिठाई चौराहे के पास कचरे का ढेर लगा है। डब्बे ओवरफ्लो हो रहे हैं जिससे भीषण दुर्गंध आ रही है, पैदल चलने का रास्ता बंद है और आवारा पशु वहां जमा हो रहे हैं। कृपया तत्काल सफाई कराएं।"
         : "Solid waste dump near a residential market in New Delhi. Overflowing containers are blocking the pedestrian pathway and attracting stray animals. Needs urgent sanitation intervention.";
-      const mockName = isHi ? "राकेश कुमार" : "Rakesh Kumar";
+      const mockName = isHindi ? "राकेश कुमार" : "Rakesh Kumar";
       const mockPhone = "+91 99887 76655";
       
       // Pin location
       setLocation({
         lat: 26.8532,
         lng: 80.9723,
-        area: isHi ? "नई दिल्ली, भारत" : "New Delhi, India"
+        area: isHindi ? "नई दिल्ली, भारत" : "New Delhi, India"
       });
       
       setText(mockText);
@@ -121,7 +119,7 @@ export function ComplaintForm({
       setPhone(mockPhone);
       
       // Beautiful custom mockup SVG garbage image
-      const garbageMockImage = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 100 100'><defs><linearGradient id='bgGrad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%230b0b0f'/><stop offset='100%' stop-color='%23181824'/></linearGradient><linearGradient id='trashGrad' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%233f3f46'/><stop offset='100%' stop-color='%2327272a'/></linearGradient><linearGradient id='glowGrad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='100%' stop-color='%23ec4899'/></linearGradient><filter id='neonGlow'><feGaussianBlur stdDeviation='1.5' result='coloredBlur'/><feMerge><feMergeNode in='coloredBlur'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs><rect width='100%' height='100%' fill='url(%23bgGrad)' rx='4'/><path d='M0,20 L100,20 M0,40 L100,40 M0,60 L100,60 M0,80 L100,80 M20,0 L20,100 M40,0 L40,100 M60,0 L60,100 M80,0 L80,100' stroke='%23ffffff' stroke-width='0.1' stroke-opacity='0.15' /><circle cx='50' cy='50' r='35' fill='none' stroke='%238b5cf6' stroke-width='0.5' stroke-dasharray='1 3' stroke-opacity='0.4'/><circle cx='50' cy='50' r='15' fill='none' stroke='%23ec4899' stroke-width='0.3' stroke-opacity='0.3'/><path d='M25,75 Q40,45 55,75 Z' fill='url(%23trashGrad)' opacity='0.8' stroke='%2352525b' stroke-width='0.5'/><path d='M45,75 Q60,50 75,75 Z' fill='url(%23trashGrad)' opacity='0.7' stroke='%2352525b' stroke-width='0.5'/><path d='M35,78 Q50,38 65,78 Z' fill='url(%23trashGrad)' stroke='%238b5cf6' stroke-width='0.8' filter='url(%23neonGlow)'/><rect x='62' y='68' width='8' height='10' rx='1' fill='%2352525b' transform='rotate(15, 66, 73)' stroke='%23a78bfa' stroke-width='0.4'/><line x1='63' y1='70' x2='71' y2='72' stroke='%233f3f46' stroke-width='0.5'/><circle cx='48' cy='55' r='2.5' fill='%23ef4444' filter='url(%23neonGlow)'/><line x1='48' y1='55' x2='30' y2='45' stroke='%23ef4444' stroke-width='0.4' stroke-dasharray='1 1'/><rect x='15' y='38' width='14' height='6' rx='1' fill='%23ef4444' fill-opacity='0.15' stroke='%23ef4444' stroke-width='0.4'/><text x='22' y='42' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='3.5' fill='%23ef4444' font-weight='bold'>BIO</text><circle cx='58' cy='63' r='2' fill='%23f59e0b' filter='url(%23neonGlow)'/><line x1='58' y1='63' x2='72' y2='52' stroke='%23f59e0b' stroke-width='0.4' stroke-dasharray='1 1'/><rect x='73' y='48' width='14' height='6' rx='1' fill='%23f59e0b' fill-opacity='0.15' stroke='%23f59e0b' stroke-width='0.4'/><text x='80' y='52' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='3.5' fill='%23f59e0b' font-weight='bold'>HAZARD</text><path d='M5,12 L5,5 L12,5' fill='none' stroke='%238b5cf6' stroke-width='0.8'/><path d='M95,12 L95,5 L88,5' fill='none' stroke='%238b5cf6' stroke-width='0.8'/><path d='M5,88 L5,95 L12,95' fill='none' stroke='%238b5cf6' stroke-width='0.8'/><path d='M95,88 L95,95 L88,95' fill='none' stroke='%238b5cf6' stroke-width='0.8'/><text x='50%' y='15%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='5' fill='url(%23glowGrad)' font-weight='black' letter-spacing='0.5'>EVIDENCE IDENTIFIED</text><text x='50%' y='88%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='4' fill='%23a78bfa' font-weight='medium'>Gomti Nagar, Lucknow</text></svg>";
+      const garbageMockImage = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 100 100'><defs><linearGradient id='bgGrad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%230b0b0f'/><stop offset='100%' stop-color='%23181824'/></linearGradient><linearGradient id='trashGrad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%233f3f46'/><stop offset='100%' stop-color='%2327272a'/></linearGradient><linearGradient id='glowGrad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23a78bfa'/><stop offset='100%' stop-color='%23ec4899'/></linearGradient><filter id='neonGlow'><feGaussianBlur stdDeviation='1.5' result='coloredBlur'/><feMerge><feMergeNode in='coloredBlur'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs><rect width='100%' height='100%' fill='url(%23bgGrad)' rx='4'/><path d='M0,20 L100,20 M0,40 L100,40 M0,60 L100,60 M0,80 L100,80 M20,0 L20,100 M40,0 L40,100 M60,0 L60,100 M80,0 L80,100' stroke='%23ffffff' stroke-width='0.1' stroke-opacity='0.15' /><circle cx='50' cy='50' r='35' fill='none' stroke='%238b5cf6' stroke-width='0.5' stroke-dasharray='1 3' stroke-opacity='0.4'/><circle cx='50' cy='50' r='15' fill='none' stroke='%23ec4899' stroke-width='0.3' stroke-opacity='0.3'/><path d='M25,75 Q40,45 55,75 Z' fill='url(%23trashGrad)' opacity='0.8' stroke='%2352525b' stroke-width='0.5'/><path d='M45,75 Q60,50 75,75 Z' fill='url(%23trashGrad)' opacity='0.7' stroke='%2352525b' stroke-width='0.5'/><path d='M35,78 Q50,38 65,78 Z' fill='url(%23trashGrad)' stroke='%238b5cf6' stroke-width='0.8' filter='url(%23neonGlow)'/><rect x='62' y='68' width='8' height='10' rx='1' fill='%2352525b' transform='rotate(15, 66, 73)' stroke='%23a78bfa' stroke-width='0.4'/><line x1='63' y1='70' x2='71' y2='72' stroke='%233f3f46' stroke-width='0.5'/><circle cx='48' cy='55' r='2.5' fill='%23ef4444' filter='url(%23neonGlow)'/><line x1='48' y1='55' x2='30' y2='45' stroke='%23ef4444' stroke-width='0.4' stroke-dasharray='1 1'/><rect x='15' y='38' width='14' height='6' rx='1' fill='%23ef4444' fill-opacity='0.15' stroke='%23ef4444' stroke-width='0.4'/><text x='22' y='42' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='3.5' fill='%23ef4444' font-weight='bold'>BIO</text><circle cx='58' cy='63' r='2' fill='%23f59e0b' filter='url(%23neonGlow)'/><line x1='58' y1='63' x2='72' y2='52' stroke='%23f59e0b' stroke-width='0.4' stroke-dasharray='1 1'/><rect x='73' y='48' width='14' height='6' rx='1' fill='%23f59e0b' fill-opacity='0.15' stroke='%23f59e0b' stroke-width='0.4'/><text x='80' y='52' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='3.5' fill='%23f59e0b' font-weight='bold'>HAZARD</text><path d='M5,12 L5,5 L12,5' fill='none' stroke='%238b5cf6' stroke-width='0.8'/><path d='M95,12 L95,5 L88,5' fill='none' stroke='%238b5cf6' stroke-width='0.8'/><path d='M5,88 L5,95 L12,95' fill='none' stroke='%238b5cf6' stroke-width='0.8'/><path d='M95,88 L95,95 L88,95' fill='none' stroke='%238b5cf6' stroke-width='0.8'/><text x='50%' y='15%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='5' fill='url(%23glowGrad)' font-weight='black' letter-spacing='0.5'>EVIDENCE IDENTIFIED</text><text x='50%' y='88%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='4' fill='%23a78bfa' font-weight='medium'>Gomti Nagar, Lucknow</text></svg>";
       
       setPhoto(garbageMockImage);
       setPhotoName("Gomti_Nagar_Garbage.jpg");
@@ -158,45 +156,45 @@ export function ComplaintForm({
       }
       window.removeEventListener("janmitra-autofill", handleAutofill);
     };
-  }, [isHi]);
+  }, [currentLanguage]);
 
   const dict = {
-    describeTitle: isHi ? "🚨 अपनी समस्या दर्ज करें" : "🚨 Report Your Issue",
-    subtitleText: isHi ? "आज आप किस समस्या का सामना कर रहे हैं?" : "What problem are you facing today?",
-    voiceRecording: isHi ? "ऑडियो इनपुट रिकॉर्डिंग चालू..." : "Recording Audio Input...",
-    voiceInput: isHi ? "🎤 अपनी शिकायत बोलें" : "🎤 Speak Complaint",
-    uploadPhoto: isHi ? "📷 फोटो जोड़ें" : "📷 Add Photo",
-    photoAttached: isHi ? "📷 तस्वीर संलग्न है" : "📷 Photo Attached",
-    detectLocation: isHi ? "📍 स्वतः स्थान पता करें" : "📍 Auto Detect Location",
-    pinnedArea: isHi ? "रिवर्स-जियोकोडेड पिन किया गया क्षेत्र" : "Reverse-Geocoded Pinned Area",
-    yourDetails: isHi ? "आपका विवरण" : "Your Details",
-    namePlaceholder: isHi ? "आपका नाम" : "Your Name",
-    phonePlaceholder: isHi ? "फ़ोन नंबर" : "Phone Number",
-    submitBtn: isHi ? " शिकायत जमा करें" : "Submit Complaint",
-    submitSubText: isHi ? "AI स्वचालित रूप से सही विभाग को शिकायत भेजेगा" : "AI will automatically route to correct department",
-    analyzingTitle: isHi ? "AI आपकी शिकायत का विश्लेषण कर रहा है" : "AI is Analyzing Your Complaint",
-    analyzingDesc: isHi ? "वास्तविक समय में श्रेणियों का वर्गीकरण, तात्कालिकता का पता लगाना और विभाग आवंटन..." : "Classifying categories, detecting urgency & routing in real-time...",
-    successTitle: isHi ? "शिकायत सफलतापूर्वक दर्ज की गई!" : "Complaint Registered Successfully!",
-    trackRealtime: isHi ? "वास्तविक समय में प्रगति को ट्रैक करें" : "Track progress in real-time",
-    photoAttachment: isHi ? "फोटो संलग्नक" : "Photo Attachment",
-    scannedAI: isHi ? "AI विज़न द्वारा स्कैन किया गया" : "Scanned by AI Vision",
-    aiClassification: isHi ? "AI वर्गीकरण परिणाम" : "AI Classification Results",
-    confidence: isHi ? "सटीकता" : "Confidence",
-    category: isHi ? "श्रेणी" : "Category",
-    priority: isHi ? "प्राथमिकता" : "Priority",
-    department: isHi ? "विभाग" : "Department",
-    estResolution: isHi ? "अनुमानित समाधान समय" : "Est. Resolution",
-    days: isHi ? "दिन" : "days",
-    aiOfficerSummary: isHi ? "AI अधिकारी सारांश" : "AI Officer Summary",
-    notificationSent: isHi ? "नागरिक एसएमएस सूचना प्रेषित:" : "Notification sent:",
-    fileAnother: isHi ? "एक और शिकायत दर्ज करें" : "File Another Complaint",
-    trackThis: isHi ? "शिकायत ट्रैक करें" : "Track This Complaint",
-    placeholderText: isHi ? "समस्या का विस्तार से वर्णन करें (जैसे, नई दिल्ली के मुख्य मार्ग पर 3 दिनों से स्ट्रीट लाइट खराब है...)" : "Describe the issue in detail (e.g., Streetlight broken on a main road in New Delhi for 3 days...)",
-    selectPriority: isHi ? "प्राथमिकता चुनें" : "Select Priority",
-    priorityAuto: isHi ? "ऑटो (AI तय करेगा)" : "Auto-Detect",
-    priorityNormal: isHi ? "सामान्य" : "Normal",
-    priorityImportant: isHi ? "महत्वपूर्ण" : "Important",
-    priorityEmergency: isHi ? "आपातकालीन" : "Emergency",
+    describeTitle: `🚨 ${t("Report Your Issue")}`,
+    subtitleText: t("What problem are you facing today?"),
+    voiceRecording: t("Recording Audio Input..."),
+    voiceInput: `🎤 ${t("Speak Complaint")}`,
+    uploadPhoto: `📷 ${t("Add Photo")}`,
+    photoAttached: `📷 ${t("Photo Attached")}`,
+    detectLocation: `📍 ${t("Auto Detect Location")}`,
+    pinnedArea: t("Reverse-Geocoded Pinned Area"),
+    yourDetails: t("Your Details"),
+    namePlaceholder: t("Your Name"),
+    phonePlaceholder: t("Phone Number"),
+    submitBtn: t("Submit Complaint"),
+    submitSubText: t("AI will automatically route to correct department"),
+    analyzingTitle: t("AI is Analyzing Your Complaint"),
+    analyzingDesc: t("Classifying categories, detecting urgency & routing in real-time..."),
+    successTitle: t("Complaint Registered Successfully!"),
+    trackRealtime: t("Track progress in real-time"),
+    photoAttachment: t("Photo Attachment"),
+    scannedAI: t("Scanned by AI Vision"),
+    aiClassification: t("AI Classification Results"),
+    confidence: t("Confidence"),
+    category: t("Category"),
+    priority: t("Priority"),
+    department: t("Department"),
+    estResolution: t("Est. Resolution"),
+    days: t("days"),
+    aiOfficerSummary: t("AI Officer Summary"),
+    notificationSent: t("Notification sent:"),
+    fileAnother: t("File Another Complaint"),
+    trackThis: t("Track This Complaint"),
+    placeholderText: t("Describe the issue in detail (e.g., Streetlight broken on a main road in New Delhi for 3 days...)"),
+    selectPriority: t("Select Priority"),
+    priorityAuto: t("Auto-Detect"),
+    priorityNormal: t("Normal"),
+    priorityImportant: t("Important"),
+    priorityEmergency: t("Emergency"),
   };
 
   const handlePhotoUploadClick = () => {
@@ -226,7 +224,7 @@ export function ComplaintForm({
         }, 150);
 
         if (!text.trim()) {
-          if (isHi) {
+          if (currentLanguage === "hi") {
             setText(`[AI विज़न स्कैन: फोटो अपलोड (${file.name})] गोमती नगर में सड़क क्षति और कचरे की समस्या देखी गई है। कृपया शीघ्र समाधान करें।`);
           } else {
             setText(`[AI Vision Scan: Photo uploaded (${file.name})] Gomti Nagar road damage and garbage issue detected. Please resolve immediately.`);
@@ -248,13 +246,13 @@ export function ComplaintForm({
   const detectLocation = useCallback(async () => {
     const fetchAddress = async (lat: number, lng: number) => {
       try {
-        const res = await fetch(`/api/geocode?lat=${lat}&lng=${lng}&lang=${language}`);
+        const res = await fetch(`/api/geocode?lat=${lat}&lng=${lng}&lang=${currentLanguage}`);
         if (!res.ok) throw new Error("Geocode API failed");
         const data = await res.json();
         return data.area;
       } catch (err) {
         console.error("Geocoding fetch failed:", err);
-          return isHi ? "नई दिल्ली, भारत" : "New Delhi, India";
+        return currentLanguage === "hi" ? "नई दिल्ली, भारत" : "New Delhi, India";
       }
     };
 
@@ -279,7 +277,7 @@ export function ComplaintForm({
       const area = await fetchAddress(lat, lng);
       setLocation({ lat, lng, area });
     }
-  }, [isHi, language]);
+  }, [currentLanguage]);
 
   // Speech Recording via Web Speech API (Client-side real-time transcript) with fallback to MediaRecorder & backend API
   const startVoiceRecording = useCallback(async () => {
@@ -291,7 +289,7 @@ export function ComplaintForm({
         recognitionRef.current = recognition;
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = isHi ? "hi-IN" : "en-IN";
+        recognition.lang = `${currentLanguage}-IN`;
 
         const baseText = textRef.current.trim();
 
@@ -396,7 +394,7 @@ export function ComplaintForm({
             reader.readAsDataURL(audioBlob);
             reader.onloadend = async () => {
               const base64Audio = reader.result as string;
-              const res = await fetch("/api/transcribe", {
+              const res = await fetch("/api/bhashini/transcribe", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -404,6 +402,7 @@ export function ComplaintForm({
                 body: JSON.stringify({
                   audio: base64Audio,
                   mimeType: mimeType.split(";")[0],
+                  sourceLanguage: currentLanguage,
                 }),
               });
               
@@ -437,7 +436,7 @@ export function ComplaintForm({
       fallbackTimeoutRef.current = setTimeout(() => {
         setIsRecording(false);
         const baseText = textRef.current.trim();
-        if (isHi) {
+        if (currentLanguage === "hi") {
           const mock = "गोमती नगर में मिठाई चौराहे के पास सड़क पर गहरे गड्ढे हो गए हैं। वाहनों को निकलने में भारी असुविधा हो रही है और दुर्घटना का खतरा बना रहता है। कृपया शीघ्र मरम्मत कराएं।";
           setText(() => (baseText ? baseText + " " + mock : mock));
         } else {
@@ -447,7 +446,7 @@ export function ComplaintForm({
         fallbackTimeoutRef.current = null;
       }, 3000);
     }
-  }, [isHi, language]);
+  }, [currentLanguage]);
 
   const stopVoiceRecording = useCallback(() => {
     if (recognitionRef.current) {
@@ -488,7 +487,7 @@ export function ComplaintForm({
 
     // If 0 tokens remaining and it is not an emergency, block it immediately
     if (currentTokenState.tokensRemaining <= 0 && !isEmergency) {
-      setTokenAlert(isHi ? "दैनिक शिकायत सीमा पूरी हो गई है। कृपया कल पुनः प्रयास करें या आपातकालीन शिकायत दर्ज करें।" : "Daily complaint limit reached. Please try again tomorrow or report an emergency for priority bypass.");
+      setTokenAlert(t("Daily complaint limit reached. Please try again tomorrow or report an emergency for priority bypass."));
       return;
     }
 
@@ -497,8 +496,11 @@ export function ComplaintForm({
     setTokenAlert(null);
 
     // Call real Gemini proxy route and start visual steps
-    const enhancedText = userPriority === "Auto" ? text : `${text}\n[User Selected Priority: ${userPriority}]`;
-    const apiResultPromise = classifyComplaintAI(enhancedText, photo);
+    const translatedTextPromise = translateText(text, "en", currentLanguage);
+    const apiResultPromise = translatedTextPromise.then((translatedText) => {
+      const enhancedText = userPriority === "Auto" ? translatedText : `${translatedText}\n[User Selected Priority: ${userPriority}]`;
+      return classifyComplaintAI(enhancedText, photo);
+    });
 
     const steps = [
       () => setProcessingStep(1), // Understanding text
@@ -526,20 +528,24 @@ export function ComplaintForm({
       }
 
       // Deduct token now that we have classified and confirmed
+      const translatedText = await translatedTextPromise;
+      const enhancedText = userPriority === "Auto" ? translatedText : `${translatedText}\n[User Selected Priority: ${userPriority}]`;
       const tokenResult = consumeToken(enhancedText, result.category);
       
       if (!tokenResult.allowed) {
         setStep("input");
-        setTokenAlert(isHi ? tokenResult.reasonHi : tokenResult.reason);
+        setTokenAlert(currentLanguage === "hi" ? tokenResult.reasonHi : tokenResult.reason);
         return;
       }
 
       // Add to dynamic localStorage Database Store
       const newComplaint = await addComplaint({
         title: text.split(/[.।\n]/)[0].slice(0, 60) || "Civic Issue",
-        titleHi: isHi ? "नागरिक समस्या दर्ज" : "Civic Issue Reported",
+        titleHi: currentLanguage === "hi" ? "नागरिक समस्या दर्ज" : "Civic Issue Reported",
         description: text,
-        descriptionHi: isHi ? text : "",
+        descriptionHi: translatedText,
+        originalText: text,
+        translatedText,
         category: result.category,
         categoryHi: result.categoryHi,
         priority: result.priority,
@@ -584,26 +590,18 @@ export function ComplaintForm({
     removePhoto();
   };
 
-  const processingSteps = isHi
-    ? [
-        { label: "शिकायत पाठ का विश्लेषण..." },
-        { label: "शिकायत श्रेणी की पहचान..." },
-        { label: "प्राथमिकता एवं तात्कालिकता का आकलन..." },
-        { label: "संबद्ध विभाग को अग्रेषण..." },
-        { label: "अधिकारी सारांश का सृजन..." },
-      ]
-    : [
-        { label: "Understanding complaint text..." },
-        { label: "Detecting complaint category..." },
-        { label: "Assessing priority & urgency..." },
-        { label: "Routing to department..." },
-        { label: "Generating officer summary..." },
-      ];
+  const processingSteps = [
+    { label: t("Understanding complaint text...") },
+    { label: t("Detecting complaint category...") },
+    { label: t("Assessing priority & urgency...") },
+    { label: t("Routing to department...") },
+    { label: t("Generating officer summary...") },
+  ];
 
   const getPriorityLabel = (p: string) => {
-    if (p === "high") return isHi ? "उच्च (HIGH)" : "HIGH";
-    if (p === "medium") return isHi ? "मध्यम (MEDIUM)" : "MEDIUM";
-    return isHi ? "निम्न (LOW)" : "LOW";
+    if (p === "high") return t("HIGH");
+    if (p === "medium") return t("MEDIUM");
+    return t("LOW");
   };
 
   return (
@@ -633,39 +631,11 @@ export function ComplaintForm({
                       </div>
                       <div>
                         <h3 className="font-extrabold text-base sm:text-lg text-white leading-tight">{dict.describeTitle}</h3>
-                        <span className="text-[9px] font-black text-indigo-400/70 uppercase tracking-[0.15em]">{isHi ? "(अंग्रेजी भी समर्थित)" : "(HINDI SUPPORTED)"}</span>
+                        <span className="text-[9px] font-black text-indigo-400/70 uppercase tracking-[0.15em]">{t("MULTILINGUAL AI POWERED")}</span>
                       </div>
                     </div>
                     <p className="text-[13px] text-gray-400/90 font-medium pl-0.5">{dict.subtitleText}</p>
                   </div>
-
-                  {/* Redesigned Premium Language Toggle */}
-                  {onLanguageChange && (
-                    <div className="flex items-center gap-1 bg-[#090d16] border border-[#1f2937]/65 p-0.5 rounded-xl shadow-inner w-fit h-8.5 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => onLanguageChange("en")}
-                        className={`px-3 h-7 text-[10px] font-black rounded-lg transition-all duration-350 cursor-pointer ${
-                          language === "en"
-                            ? "bg-linear-to-r from-blue-600 to-violet-600 text-white shadow-[0_0_12px_rgba(124,58,237,0.35)]"
-                            : "text-gray-400 hover:text-white"
-                        }`}
-                      >
-                        EN
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => onLanguageChange("hi")}
-                        className={`px-3 h-7 text-[10px] font-black rounded-lg transition-all duration-350 cursor-pointer ${
-                          language === "hi"
-                            ? "bg-linear-to-r from-blue-600 to-violet-600 text-white shadow-[0_0_12px_rgba(124,58,237,0.35)]"
-                            : "text-gray-400 hover:text-white"
-                        }`}
-                      >
-                        हिन्दी
-                      </button>
-                    </div>
-                  )}
                 </div>
 
                 {/* Token Tracker - Pill Style */}
@@ -675,7 +645,7 @@ export function ComplaintForm({
                       <Coins className="w-3.5 h-3.5 text-amber-400" />
                     </div>
                     <span className="text-[11px] font-bold text-gray-400">
-                      {isHi ? "शेष शिकायतें:" : "Complaints Remaining:"}
+                      {t("Complaints Remaining:")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -742,7 +712,7 @@ export function ComplaintForm({
                         <p className={`text-[10px] font-bold uppercase tracking-wider ${isScanningImage ? "text-indigo-400" : "text-emerald-400"}`}>
                           {isScanningImage 
                             ? `AI SCAN: ${scanProgress}%` 
-                            : (isHi ? "✓ AI स्कैन पूर्ण" : "✓ AI Scan Complete")}
+                            : `✓ ${t("AI Scan Complete")}`}
                         </p>
                       </div>
                     </div>
@@ -777,19 +747,19 @@ export function ComplaintForm({
                         <div className="w-7 h-7 rounded-lg bg-red-500/15 flex items-center justify-center shrink-0">
                           <MicOff className="w-3.5 h-3.5 text-red-400 animate-pulse" />
                         </div>
-                        <span className="text-[10px] font-black uppercase tracking-wider text-red-300 truncate">{isHi ? "रोकें..." : "Stop..."}</span>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-red-300 truncate">{t("Stop...")}</span>
                       </>
                     ) : isTranscribing ? (
                       <>
                         <Loader2 className="w-4 h-4 text-indigo-400 animate-spin shrink-0" />
-                        <span className="text-[10px] font-black uppercase tracking-wider text-indigo-300 truncate">{isHi ? "AI विश्लेषण..." : "AI..."}</span>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-indigo-300 truncate">{t("AI...")}</span>
                       </>
                     ) : (
                       <>
                         <div className="w-7 h-7 rounded-lg bg-indigo-500/10 flex items-center justify-center shrink-0 group-hover:bg-indigo-500/15 transition-colors">
                           <Mic className="w-3.5 h-3.5 text-indigo-400" />
                         </div>
-                        <span className="text-[10px] font-black uppercase tracking-wider text-gray-300 group-hover:text-white truncate">{isHi ? "बोलें" : "Speak"}</span>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-gray-300 group-hover:text-white truncate">{t("Speak")}</span>
                       </>
                     )}
                   </button>
@@ -812,7 +782,7 @@ export function ComplaintForm({
                     </div>
                     <span className={`text-[10px] font-black uppercase tracking-wider truncate ${
                       photo ? "text-emerald-300" : "text-gray-300 group-hover:text-white"
-                    }`}>{photo ? (isHi ? "संलग्न ✓" : "Attached ✓") : (isHi ? "फोटो" : "Photo")}</span>
+                    }`}>{photo ? t("Attached ✓") : t("Photo")}</span>
                   </button>
 
                   {/* Location Detection */}
@@ -832,7 +802,7 @@ export function ComplaintForm({
                     </div>
                     <span className={`text-[10px] font-black uppercase tracking-wider truncate ${
                       location ? "text-emerald-300" : "text-gray-300 group-hover:text-white"
-                    }`}>{location ? (location.area.length > 18 ? location.area.slice(0, 18) + "…" : location.area) : (isHi ? "स्थान" : "Location")}</span>
+                    }`}>{location ? (location.area.length > 18 ? location.area.slice(0, 18) + "…" : location.area) : t("Location")}</span>
                   </button>
                 </div>
 
@@ -874,10 +844,10 @@ export function ComplaintForm({
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {[
-                    { id: "Auto", label: dict.priorityAuto, icon: "✨", color: "indigo", desc: isHi ? "AI तय करेगा" : "AI decides" },
-                    { id: "Normal", label: dict.priorityNormal, icon: "○", color: "gray", desc: isHi ? "सामान्य" : "Standard" },
-                    { id: "Important", label: dict.priorityImportant, icon: "🟠", color: "amber", desc: isHi ? "तत्काल" : "Urgent" },
-                    { id: "Emergency", label: dict.priorityEmergency, icon: "🔴", color: "red", desc: isHi ? "आपातकालीन" : "Critical" }
+                    { id: "Auto", label: dict.priorityAuto, icon: "✨", color: "indigo", desc: t("AI decides") },
+                    { id: "Normal", label: dict.priorityNormal, icon: "○", color: "gray", desc: t("Standard") },
+                    { id: "Important", label: dict.priorityImportant, icon: "🟠", color: "amber", desc: t("Urgent") },
+                    { id: "Emergency", label: dict.priorityEmergency, icon: "🔴", color: "red", desc: t("Critical") }
                   ].map((p) => {
                     const isSelected = userPriority === p.id;
                     const colorMap: Record<string, string> = {
@@ -955,12 +925,10 @@ export function ComplaintForm({
                     <Zap className="w-5 h-5 text-amber-400 animate-bounce shrink-0" />
                     <div>
                       <p className="text-xs font-bold text-amber-300">
-                        {isHi ? "आपातकालीन शिकायत का पता चला" : "Emergency Complaint Detected"}
+                        {t("Emergency Complaint Detected")}
                       </p>
                       <p className="text-[11px] text-amber-400/90 font-medium leading-relaxed">
-                        {isHi 
-                          ? "प्राथमिकता पहुँच प्रदान की गई — आप इस शिकायत को जमा कर सकते हैं।" 
-                          : "Priority access granted — you can submit this complaint despite the limit."}
+                        {t("Priority access granted — you can submit this complaint despite the limit.")}
                       </p>
                     </div>
                   </>
@@ -969,12 +937,10 @@ export function ComplaintForm({
                     <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 animate-pulse" />
                     <div>
                       <p className="text-xs font-bold text-red-300">
-                        {isHi ? "दैनिक शिकायत सीमा पूरी हो गई है" : "Daily Complaint Limit Reached"}
+                        {t("Daily Complaint Limit Reached")}
                       </p>
                       <p className="text-[11px] text-red-400/90 font-medium leading-relaxed">
-                        {isHi 
-                          ? "कृपया कल पुनः प्रयास करें या आपातकालीन शिकायत (जैसे: आग, पानी रिसाव, बिजली का खतरा) दर्ज करें।" 
-                          : "Please try again tomorrow or report an emergency (e.g. fire, water leak, electric danger) for bypass."}
+                        {t("Please try again tomorrow or report an emergency (e.g. fire, water leak, electric danger) for bypass.")}
                       </p>
                     </div>
                   </>
@@ -1106,7 +1072,7 @@ export function ComplaintForm({
                 <div>
                   <h3 className="font-bold text-lg text-foreground/90">{dict.successTitle}</h3>
                   <p className="text-sm text-muted-foreground/80">
-                    {isHi ? "आईडी:" : "ID:"} <span className="font-mono font-bold text-foreground">{createdComplaintId}</span> • {dict.trackRealtime}
+                    {t("ID:")} <span className="font-mono font-bold text-foreground">{createdComplaintId}</span> • {dict.trackRealtime}
                   </p>
                 </div>
               </div>
@@ -1125,10 +1091,10 @@ export function ComplaintForm({
                   </div>
                   <div>
                     <h4 className="font-bold text-sm text-amber-400">
-                      {isHi ? "आपातकालीन शिकायत स्वीकृत" : "Emergency Complaint Accepted"}
+                      {t("Emergency Complaint Accepted")}
                     </h4>
                     <p className="text-xs text-amber-300/90 font-medium">
-                      {isHi ? "आपातकालीन शिकायत का पता चला — प्राथमिकता पहुँच प्रदान की गई।" : "Emergency complaint detected — priority access granted."}
+                      {t("Emergency complaint detected — priority access granted.")}
                     </p>
                   </div>
                 </div>
@@ -1169,7 +1135,7 @@ export function ComplaintForm({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-muted/30 rounded-xl p-4 border border-border/20 transition-all hover:bg-muted/40">
                   <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-1">{dict.category}</div>
-                  <div className="font-bold text-sm text-foreground/90">{isHi ? classification.categoryHi : classification.category}</div>
+                  <div className="font-bold text-sm text-foreground/90">{currentLanguage === "hi" && classification.categoryHi ? classification.categoryHi : classification.category}</div>
                 </div>
 
                 <div className="bg-muted/30 rounded-xl p-4 border border-border/20 transition-all hover:bg-muted/40">
@@ -1188,21 +1154,21 @@ export function ComplaintForm({
                   <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-1">{dict.department}</div>
                   <div className="font-bold text-sm text-foreground/90 flex items-center gap-1.5">
                     <Building2 className="w-4 h-4 text-gov-blue" />
-                    {isHi ? classification.departmentHi : classification.department}
+                    {currentLanguage === "hi" && classification.departmentHi ? classification.departmentHi : classification.department}
                   </div>
                 </div>
 
                 <div className="bg-muted/30 rounded-xl p-4 border border-border/20 transition-all hover:bg-muted/40">
                   <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-1">{dict.estResolution}</div>
                   <div className="font-bold text-sm text-foreground/90">{classification.predictedResolutionDays} {dict.days}</div>
-                  <div className="text-[11px] text-muted-foreground/80 font-medium">{isHi ? "सामान्य प्रसंस्करण समय सीमा" : classification.urgency}</div>
+                  <div className="text-[11px] text-muted-foreground/80 font-medium">{currentLanguage === "hi" ? "सामान्य प्रसंस्करण समय सीमा" : classification.urgency}</div>
                 </div>
 
                 <div className="bg-muted/30 rounded-xl p-4 border border-border/20 transition-all hover:bg-muted/40 sm:col-span-2">
-                  <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-1">{isHi ? "वार्ड (Ward)" : "Ward"}</div>
+                  <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider mb-1">{t("Ward")}</div>
                   <div className="font-bold text-sm text-foreground/90 flex items-center gap-1.5">
                     <MapPin className="w-4 h-4 text-trust-green" />
-                    {classification.wardHi ? (isHi ? classification.wardHi : classification.ward) : (location?.area || (isHi ? "जीपीएस द्वारा स्वतः प्राप्त" : "Auto-detected from GPS"))}
+                    {classification.wardHi && currentLanguage === "hi" ? classification.wardHi : (classification.ward || location?.area || t("Auto-detected from GPS"))}
                   </div>
                 </div>
               </div>
@@ -1215,7 +1181,7 @@ export function ComplaintForm({
                 <h3 className="font-bold text-base text-foreground/90">{dict.aiOfficerSummary}</h3>
               </div>
               <div className="bg-background/40 rounded-xl p-4 border border-ai-purple/15 text-sm leading-relaxed text-foreground/90 font-medium shadow-inner">
-                {isHi ? classification.summaryHi : classification.summary}
+                {currentLanguage === "hi" && classification.summaryHi ? classification.summaryHi : classification.summary}
               </div>
             </div>
 
@@ -1226,7 +1192,7 @@ export function ComplaintForm({
                 <span>{dict.notificationSent}</span>
               </div>
               <p className="text-sm mt-2 text-muted-foreground leading-relaxed font-semibold">
-                &ldquo;{isHi ? `आपकी शिकायत सफलतापूर्वक संबंधित विभाग (${classification.departmentHi}) को भेज दी गई है। शिकायत आईडी: ${createdComplaintId}` : `Your complaint has been successfully forwarded to ${classification.department}. Complaint ID: ${createdComplaintId}`}&rdquo;
+                &ldquo;{t("Your complaint has been successfully forwarded to")} {currentLanguage === "hi" && classification.departmentHi ? classification.departmentHi : classification.department}. {t("Complaint ID:")} {createdComplaintId}&rdquo;
               </p>
             </div>
 

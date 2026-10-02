@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, MapPin, Clock, ShieldCheck, Activity } from "lucide-react";
+import { useLanguage } from "@/components/shared/LanguageContext";
 
 const stats = [
   { value: 10247, label: "Complaints Resolved", suffix: "+", color: "#10B981" },
@@ -65,6 +66,7 @@ function StatCard({
   color: string;
   delay: number;
 }) {
+  const { t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const count = useCountUp(value, 2000, inView);
@@ -98,12 +100,13 @@ function StatCard({
         {count.toLocaleString()}
         <span className="text-[0.6em] font-bold ml-0.5">{suffix}</span>
       </div>
-      <div className="text-xs sm:text-sm text-muted-foreground font-semibold uppercase tracking-wider">{label}</div>
+      <div className="text-xs sm:text-sm text-muted-foreground font-semibold uppercase tracking-wider">{t(label)}</div>
     </motion.div>
   );
 }
 
 export function Statistics() {
+  const { t } = useLanguage();
   const [tickerIndex, setTickerIndex] = useState(0);
 
   // Cycle recent resolution feed items
@@ -134,13 +137,13 @@ export function Statistics() {
         >
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-trust-green/10 border border-trust-green/20 text-xs font-bold text-trust-green uppercase tracking-wider mb-4 animate-pulse">
             <ShieldCheck className="w-3.5 h-3.5" />
-            Verified Metrics
+            {t("Verified Metrics")}
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Transforming <span className="gradient-text">Governance</span> at Scale
+            {t("Transforming")} <span className="gradient-text">{t("Governance")}</span> {t("at Scale")}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Providing transparency, accountabilty, and velocity to citizen complaints across Uttar Pradesh.
+            {t("Providing transparency, accountabilty, and velocity to citizen complaints across Uttar Pradesh.")}
           </p>
         </motion.div>
 
@@ -165,13 +168,13 @@ export function Statistics() {
                 <Activity className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-base md:text-lg">Recent Resolved Grievances</h3>
-                <p className="text-xs text-muted-foreground">Auto-Escalation & Resolution Audit Ticker</p>
+                <h3 className="font-bold text-base md:text-lg">{t("Recent Resolved Grievances")}</h3>
+                <p className="text-xs text-muted-foreground">{t("Auto-Escalation & Resolution Audit Ticker")}</p>
               </div>
             </div>
             <div className="flex items-center gap-2 bg-muted/60 border border-border/40 px-3 py-1.5 rounded-lg text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-trust-green animate-ping" />
-              <span>LIVE DATABASE COUNTER</span>
+              <span>{t("LIVE DATABASE COUNTER")}</span>
             </div>
           </div>
 

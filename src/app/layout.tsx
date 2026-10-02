@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DemoTour } from "@/components/landing/DemoTour";
 import { AIAssistantWidget } from "@/components/shared/AIAssistantWidget";
+import { LanguageProvider } from "@/components/shared/LanguageContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,14 +35,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full dark`} suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" className={`${inter.variable} h-full dark`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col font-sans antialiased">
         <TooltipProvider>
-          {children}
-          <Suspense fallback={null}>
-            <DemoTour />
-          </Suspense>
-          <AIAssistantWidget />
+          <LanguageProvider>
+            {children}
+            <Suspense fallback={null}>
+              <DemoTour />
+            </Suspense>
+            <AIAssistantWidget />
+          </LanguageProvider>
         </TooltipProvider>
       </body>
     </html>

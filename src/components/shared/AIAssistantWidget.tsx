@@ -39,6 +39,8 @@ import {
   addCitizenNotification,
 } from "@/lib/complaints";
 import type { Complaint, TimelineEvent, DashboardStats } from "@/types";
+import { LanguageDropdown } from "./LanguageDropdown";
+import { useLanguage } from "./LanguageContext";
 
 interface Message {
   id: string;
@@ -245,7 +247,7 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
   const [isOpen, setIsOpen] = useState(inline);
 
 
-  const [language, setLanguage] = useState<"en" | "hi">("en");
+  const { currentLanguage, translateText } = useLanguage();
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -261,7 +263,7 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
   const voiceTimeout2Ref = useRef<NodeJS.Timeout | null>(null);
   const previousInputRef = useRef<string>("");
 
-  const isHi = language === "hi";
+  const isHi = currentLanguage === "hi";
 
   // Initial welcome message
   useEffect(() => {
@@ -277,7 +279,7 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
         },
       ]);
     }
-  }, [language]);
+  }, [currentLanguage]);
 
   // Clean up native speech recognition on unmount
   useEffect(() => {
@@ -748,9 +750,9 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate AI response delay
     setTimeout(async () => {
-      const result = (await parseMessage(textToSend)) as any;
+      const englishInput = await translateText(textToSend, "en", currentLanguage);
+      const result = (await parseMessage(englishInput)) as any;
 
       // Handle clear chat special case
       if (result._clearChat) {
@@ -767,10 +769,11 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
         return;
       }
 
+      const translatedResponse = await translateText(result.text, currentLanguage, "en");
       const newAiMessage: Message = {
         id: `msg-${Date.now()}-ai`,
         sender: "ai",
-        text: result.text,
+        text: translatedResponse,
         isCustomCard: result.isCustomCard,
         cardType: result.cardType as any,
         cardData: result.cardData,
@@ -796,7 +799,7 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
         recognitionRef.current = recognition;
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = isHi ? "hi-IN" : "en-IN";
+        recognition.lang = `${currentLanguage}-IN`;
 
         recognition.onstart = () => {
           setIsRecording(true);
@@ -1007,11 +1010,11 @@ export function AIAssistantWidget({ inline = false }: AIAssistantWidgetProps) {
               <div className="flex items-center gap-2">
                 {/* Language Switcher */}
                 <button
-                  onClick={() => setLanguage((l) => (l === "en" ? "hi" : "en"))}
-                  className="px-2 py-1 rounded-md text-[10px] border border-slate-800 bg-slate-900/40 hover:bg-slate-900 text-slate-300 font-medium cursor-pointer"
+                  className="hidden"
                 >
-                  {isHi ? "English" : "हिंदी / Hinglish"}
+                  Language
                 </button>
+                <LanguageDropdown />
 
                 {/* Sound Toggle */}
                 <button

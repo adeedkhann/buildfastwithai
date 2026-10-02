@@ -15,6 +15,7 @@ import {
   Clock,
   TrendingUp,
 } from "lucide-react";
+import { useLanguage } from "@/components/shared/LanguageContext";
 
 const features = [
   {
@@ -77,6 +78,8 @@ const extraFeatures = [
 ];
 
 export function Features() {
+  const { t } = useLanguage();
+
   return (
     <section className="py-24 relative" id="features">
       {/* Decorative blurred dot */}
@@ -93,15 +96,14 @@ export function Features() {
         >
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ai-purple/8 border border-ai-purple/15 text-xs font-semibold text-ai-purple uppercase tracking-wider mb-4">
             <Sparkles className="w-3.5 h-3.5" />
-            Empowering Citizens
+            {t("Empowering Citizens")}
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Everything You Need for{" "}
-            <span className="gradient-text">Smart Governance</span>
+            {t("Everything You Need for")} {" "}
+            <span className="gradient-text">{t("Smart Governance")}</span>
           </h2>
           <p className="text-muted-foreground text-lg">
-            From complaint submission to real-time resolution — every step is automated,
-            transparent, and powered by advanced AI.
+            {t("From complaint submission to real-time resolution — every step is automated, transparent, and powered by advanced AI.")}
           </p>
         </motion.div>
 
@@ -132,12 +134,12 @@ export function Features() {
 
               {/* Title & subtitle */}
               <div className="mb-3">
-                <h3 className="text-lg font-bold text-foreground">{feature.title}</h3>
+                <h3 className="text-lg font-bold text-foreground">{t(feature.title)}</h3>
               </div>
 
               {/* Description */}
               <p className="text-sm text-muted-foreground leading-relaxed">
-                {feature.description}
+                {t(feature.description)}
               </p>
             </motion.div>
           ))}
@@ -168,7 +170,7 @@ export function Features() {
                   <span className="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-20 transition-opacity blur-[2px]" style={{ backgroundColor: f.color }} />
                 </div>
                 <span className="tracking-wide">
-                  {f.label}
+                  {t(f.label)}
                 </span>
               </motion.div>
             );

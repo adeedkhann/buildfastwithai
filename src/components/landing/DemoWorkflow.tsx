@@ -10,6 +10,7 @@ import {
   Send,
   CheckCircle2,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const steps = [
   {
@@ -98,6 +99,7 @@ const itemVariants = {
 };
 
 export function DemoWorkflow() {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
@@ -180,13 +182,13 @@ export function DemoWorkflow() {
           viewport={{ once: true }}
         >
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gov-blue/8 border border-gov-blue/15 text-xs font-semibold text-gov-blue uppercase tracking-wider mb-4 animate-pulse">
-            Live Demo Flow
+            {t("Live Demo Flow")}
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-slate-900 dark:text-slate-100">
-            See How It <span className="gradient-text">Works</span>
+            {t("See How It")} <span className="gradient-text">{t("Works")}</span>
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
-            From voice input to automated resolution — in under 5 seconds.
+            {t("From voice input to automated resolution — in under 5 seconds.")}
           </p>
         </motion.div>
 
@@ -319,12 +321,12 @@ export function DemoWorkflow() {
                           borderColor: `${step.color}25`
                         }}
                       >
-                        STEP {step.step}
+                        {t("STEP")} {step.step}
                       </span>
-                      <h3 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100 group-hover:text-slate-950 dark:group-hover:text-white transition-colors duration-300">{step.title}</h3>
+                      <h3 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100 group-hover:text-slate-950 dark:group-hover:text-white transition-colors duration-300">{t(step.title)}</h3>
                     </div>
                     <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-                      {step.description}
+                      {t(step.description)}
                     </p>
 
                     {/* Monospace Command line / Diagnostic console badge box */}
@@ -333,7 +335,7 @@ export function DemoWorkflow() {
                       <span className="font-bold select-none tracking-wider shrink-0" style={{ color: step.color }}>
                         [{step.prefix}] &gt;
                       </span>
-                      <span className="wrap-break-word font-medium text-slate-300 relative z-10 leading-relaxed">{step.example}</span>
+                      <span className="wrap-break-word font-medium text-slate-300 relative z-10 leading-relaxed">{t(step.example)}</span>
                     </div>
                   </motion.div>
                 </motion.div>

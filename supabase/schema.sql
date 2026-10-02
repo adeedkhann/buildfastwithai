@@ -34,6 +34,8 @@ CREATE TABLE public.complaints (
   title_hi TEXT NOT NULL,
   description TEXT,
   description_hi TEXT,
+  original_text TEXT,
+  translated_text TEXT,
   category TEXT NOT NULL,
   category_hi TEXT NOT NULL,
   priority TEXT NOT NULL DEFAULT 'medium',

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useLanguage } from "@/context/LanguageContext";
 
 const testimonials = [
   {
@@ -80,6 +81,8 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+  const { t } = useLanguage();
+
   return (
     <section className="py-24 bg-muted/30 relative overflow-hidden">
       {/* Dynamic Keyframe Injection & Style Overrides for Flat Interactive Layout */}
@@ -124,10 +127,10 @@ export function Testimonials() {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-slate-850 dark:text-slate-100">
-            Trusted by <span className="gradient-text">Citizens</span>
+            {t("Trusted by")} <span className="gradient-text">{t("Citizens")}</span>
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto">
-            Real stories from real people across Uttar Pradesh.
+            {t("Real stories from real people across Uttar Pradesh.")}
           </p>
         </motion.div>
 

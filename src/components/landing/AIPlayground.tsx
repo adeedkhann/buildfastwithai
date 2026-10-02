@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PresetComplaint {
   text: string;
@@ -86,6 +87,7 @@ const presets: PresetComplaint[] = [
 ];
 
 export function AIPlayground() {
+  const { t } = useLanguage();
   const [inputText, setInputText] = useState("");
   const [customText, setCustomText] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -246,7 +248,7 @@ export function AIPlayground() {
           <div className="flex justify-center items-center gap-3 mb-4">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ai-purple/10 border border-ai-purple/20 text-xs font-bold text-ai-purple uppercase tracking-wider animate-pulse">
               <Sparkles className="w-3.5 h-3.5" />
-              Interactive Simulation
+              {t("Interactive Simulation")}
             </span>
             <button
               onClick={() => setIsAutoplay(!isAutoplay)}
@@ -258,14 +260,14 @@ export function AIPlayground() {
               title={isAutoplay ? "Click to pause autoplay" : "Click to resume autoplay"}
             >
               <span className={`w-2 h-2 rounded-full ${isAutoplay ? "bg-emerald-400 animate-ping shadow-[0_0_8px_#10b981]" : "bg-slate-500"}`} />
-              Autoplay: {isAutoplay ? "ON" : "OFF"}
+              {t("Autoplay")}: {isAutoplay ? t("ON") : t("OFF")}
             </button>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Test the <span className="gradient-text">JanMitra AI Engine</span> Live
+            {t("Test the")} <span className="gradient-text">{t("JanMitra AI Engine")}</span> {t("Live")}
           </h2>
           <p className="text-muted-foreground text-lg">
-            Experience our neural router. Type a complaint in Hindi, Hinglish, or English, or click a preset below to see AI analysis in under 5 seconds.
+            {t("Experience our neural router. Type a complaint in Hindi, Hinglish, or English, or click a preset below to see AI analysis in under 5 seconds.")}
           </p>
         </div>
 
@@ -275,13 +277,13 @@ export function AIPlayground() {
             <div className="glass-card rounded-2xl p-6 premium-glow-border">
               <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-gov-blue" />
-                Citizen Input Portal
+                {t("Citizen Input Portal")}
               </h3>
 
               {/* Preset buttons */}
               <div className="space-y-2.5 mb-5">
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Select a Sample Complaint
+                  {t("Select a Sample Complaint")}
                 </label>
                 <div className="flex flex-col gap-2">
                   {presets.map((p, idx) => (
@@ -295,7 +297,7 @@ export function AIPlayground() {
                       }`}
                     >
                       <div className="flex justify-between items-center mb-1">
-                        <span className="font-semibold text-primary">{p.category.split(" (")[0]}</span>
+                        <span className="font-semibold text-primary">{t(p.category.split(" (")[0])}</span>
                         <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted-foreground/10 text-muted-foreground">
                           {p.lang}
                         </span>
@@ -309,19 +311,19 @@ export function AIPlayground() {
               <div className="relative">
                 <div className="flex justify-between items-center mb-2">
                   <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    Or Write Your Own Complaint
+                    {t("Or Write Your Own Complaint")}
                   </label>
                   {customText && (
                     <button 
                       onClick={() => { setCustomText(""); setInputText(""); setResult(null); }}
                       className="text-xs font-medium text-destructive hover:underline flex items-center gap-1"
                     >
-                      <Undo2 className="w-3 h-3" /> Clear
+                      <Undo2 className="w-3 h-3" /> {t("Clear")}
                     </button>
                   )}
                 </div>
                 <Textarea
-                  placeholder="e.g., Mumbai Sector 4 me kal se bijli ki supply cut hai aur transformer se aawaz aa rahi hai..."
+                  placeholder={t("e.g., Mumbai Sector 4 me kal se bijli ki supply cut hai aur transformer se aawaz aa rahi hai...")}
                   className={`min-h-[120px] text-sm rounded-xl resize-none ${
                     isAnalyzing ? "pointer-events-none opacity-60" : ""
                   } ${customText ? "ai-active-glow" : ""}`}
@@ -335,7 +337,7 @@ export function AIPlayground() {
                 
                 {/* Voice button indicator mock */}
                 <div className="absolute right-3 bottom-3 flex items-center gap-2">
-                  <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">Hindi & Voice Supported</span>
+                  <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">{t("Hindi & Voice Supported")}</span>
                   <div className="w-8 h-8 rounded-full bg-ai-purple/10 flex items-center justify-center hover:bg-ai-purple/20 cursor-pointer transition-colors text-ai-purple">
                     <Volume2 className="w-4 h-4" />
                   </div>
@@ -344,12 +346,12 @@ export function AIPlayground() {
 
               <div className="mt-5">
                 <Button
-                  className="w-full bg-linear-to-r from-gov-blue to-ai-purple text-white shadow-lg shadow-gov-blue/20 h-12 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2"
+                  className="w-full bg-linear-to-r from-gov-blue to-ai-purple text-white shadow-lg shadow-gov-blue/20 h-12 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
                   disabled={isAnalyzing || (!inputText && !customText)}
                   onClick={runAnalysis}
                 >
                   <Brain className="w-4 h-4" />
-                  {isAnalyzing ? "Processing..." : "Trigger AI Diagnostics"}
+                  {isAnalyzing ? t("Processing...") : t("Trigger AI Diagnostics")}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>

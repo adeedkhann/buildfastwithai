@@ -11,6 +11,12 @@ import { Statistics } from "@/components/landing/Statistics";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { CTA } from "@/components/landing/CTA";
 
+const homeHeroCopy = {
+  title: "Fixing Citizen Grievances",
+  titleAccent: "with Next-Gen AI Routing",
+  description: "Resolve municipal issues in seconds. JanMitra parses complaints in Hindi or Hinglish, detects severity levels, and smart-routes to nodal officers automatically.",
+};
+
 export default async function LandingPage() {
   const cookieStore = await cookies();
   const authCookie = cookieStore.get("janmitra_auth");
@@ -32,7 +38,7 @@ export default async function LandingPage() {
     <>
       <Navbar />
       <main>
-        <Hero />
+        <Hero copy={homeHeroCopy} />
         <AIPlayground />
         <Features />
         <DemoWorkflow />

@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { Bot, Mail, Phone, Code2 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="border-t border-slate-900 bg-slate-950 relative overflow-hidden">
       {/* Ambient background soft glow effects */}
@@ -20,20 +25,19 @@ export function Footer() {
               <div>
                 <div className="font-bold text-lg gradient-text-blue leading-none">JanMitra</div>
                 <div className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">
-                  AI Governance
+                  {t("AI Governance")}
                 </div>
               </div>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed font-medium">
-              AI-Powered Smart Governance for faster citizen complaint resolution
-              in Uttar Pradesh.
+              {t("AI-Powered Smart Governance for faster citizen complaint resolution in Uttar Pradesh.")}
             </p>
           </div>
 
           {/* Quick Links (Platform) */}
           <div>
             <h3 className="font-bold text-xs mb-4 uppercase tracking-widest text-slate-200">
-              Platform
+              {t("Platform")}
             </h3>
             <ul className="space-y-3">
               {[
@@ -47,7 +51,7 @@ export function Footer() {
                     href={item.href}
                     className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-block font-medium"
                   >
-                    {item.label}
+                    {t(item.label)}
                   </Link>
                 </li>
               ))}
@@ -57,20 +61,20 @@ export function Footer() {
           {/* Resources */}
           <div>
             <h3 className="font-bold text-xs mb-4 uppercase tracking-widest text-slate-200">
-              Resources
+              {t("Resources")}
             </h3>
             <ul className="space-y-3">
               {[
                 { label: "Privacy Policy", href: "/privacy" },
                 { label: "Terms of Service", href: "/terms" },
-                { label: "Help Center", href: "/help" }
+                { label: "Help Center", href: "/help" },
               ].map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
                     className="text-sm text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-block font-medium"
                   >
-                    {item.label}
+                    {t(item.label)}
                   </Link>
                 </li>
               ))}
@@ -80,33 +84,41 @@ export function Footer() {
           {/* Contact */}
           <div>
             <h3 className="font-bold text-xs mb-4 uppercase tracking-widest text-slate-200">
-              Contact
+              {t("Contact")}
             </h3>
             <ul className="space-y-3.5">
               <li className="flex items-center gap-3 text-sm text-slate-400 group/item">
                 <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center border border-slate-800/80 group-hover/item:border-gov-blue/30 group-hover/item:bg-slate-950 transition-all duration-300">
                   <Phone className="w-3.5 h-3.5 text-gov-blue" />
                 </div>
-                <span className="group-hover/item:text-slate-200 transition-colors font-medium">1076 (CM Helpline)</span>
+                <span className="group-hover/item:text-slate-200 transition-colors font-medium">
+                  1076 ({t("CM Helpline")})
+                </span>
               </li>
               <li className="flex items-center gap-3 text-sm text-slate-400 group/item">
                 <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center border border-slate-800/80 group-hover/item:border-gov-blue/30 group-hover/item:bg-slate-950 transition-all duration-300">
                   <Phone className="w-3.5 h-3.5 text-gov-blue" />
                 </div>
-                <span className="group-hover/item:text-slate-200 transition-colors font-medium">1800-180-5531 (Nagar Nigam)</span>
+                <span className="group-hover/item:text-slate-200 transition-colors font-medium">
+                  1800-180-5531 ({t("Nagar Nigam")})
+                </span>
               </li>
               <li className="flex items-center gap-3 text-sm text-slate-400 group/item">
                 <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center border border-slate-800/80 group-hover/item:border-ai-purple/30 group-hover/item:bg-slate-950 transition-all duration-300">
                   <Mail className="w-3.5 h-3.5 text-ai-purple" />
                 </div>
-                <span className="group-hover/item:text-slate-200 transition-colors font-medium">support@janmitra.gov.in</span>
+                <span className="group-hover/item:text-slate-200 transition-colors font-medium">
+                  support@janmitra.gov.in
+                </span>
               </li>
               <li className="flex items-center gap-3 text-sm text-slate-400 group/item">
                 <Link href="/developers" className="flex items-center gap-3 w-full">
                   <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center border border-slate-800/80 group-hover/item:border-slate-400/30 group-hover/item:bg-slate-950 transition-all duration-300">
                     <Code2 className="w-3.5 h-3.5 text-slate-400" />
                   </div>
-                  <span className="group-hover/item:text-slate-200 transition-colors font-medium">Developers</span>
+                  <span className="group-hover/item:text-slate-200 transition-colors font-medium">
+                    {t("Developers")}
+                  </span>
                 </Link>
               </li>
             </ul>
@@ -116,7 +128,7 @@ export function Footer() {
         {/* Center-Aligned Copyright Footer Block */}
         <div className="border-t border-slate-900 mt-12 pt-8 flex justify-center">
           <p className="text-xs text-slate-500 font-medium text-center tracking-wide">
-            © 2026 JanMitra AI — Government of Uttar Pradesh. All rights reserved.
+            © 2026 JanMitra AI — {t("Government of Uttar Pradesh. All rights reserved.")}
           </p>
         </div>
       </div>

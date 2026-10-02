@@ -59,6 +59,7 @@ import {
   resetCitizenPassword,
 } from "@/lib/auth";
 import type { Complaint, Notification } from "@/types";
+import { useLanguage } from "@/components/shared/LanguageContext";
 
 const priorityIcon = {
   high: AlertTriangle,
@@ -67,6 +68,7 @@ const priorityIcon = {
 };
 
 export default function CitizenDashboard() {
+  const { t } = useLanguage();
   const [language, setLanguage] = useState<"en" | "hi">("en");
   const [activeTab, setActiveTab] = useState("new");
   const [complaints, setComplaints] = useState<Complaint[]>([]);
@@ -1072,28 +1074,28 @@ export default function CitizenDashboard() {
                       className="gap-2 px-5 h-9.5 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer data-[state=active]:bg-linear-to-r data-[state=active]:from-indigo-600/90 data-[state=active]:to-violet-600/90 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(99,102,241,0.25)] hover:bg-[#111827]/60 text-gray-400 hover:text-gray-200"
                     >
                       <Plus className="w-4 h-4 shrink-0" />
-                      {dict.newComplaint.toUpperCase()}
+                      {t("NEW COMPLAINT")}
                     </TabsTrigger>
                     <TabsTrigger
                       value="track"
                       className="gap-2 px-5 h-9.5 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer data-[state=active]:bg-linear-to-r data-[state=active]:from-indigo-600/90 data-[state=active]:to-violet-600/90 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(99,102,241,0.25)] hover:bg-[#111827]/60 text-gray-400 hover:text-gray-200"
                     >
                       <FileText className="w-4 h-4 shrink-0" />
-                      {dict.myComplaints.toUpperCase()}
+                      {t("MY COMPLAINTS")}
                     </TabsTrigger>
                     <TabsTrigger
                       value="search-track"
                       className="gap-2 px-5 h-9.5 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer data-[state=active]:bg-linear-to-r data-[state=active]:from-indigo-600/90 data-[state=active]:to-violet-600/90 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(99,102,241,0.25)] hover:bg-[#111827]/60 text-gray-400 hover:text-gray-200"
                     >
                       <Search className="w-4 h-4 shrink-0" />
-                      {isHi ? "शिकायत ट्रैक करें" : "TRACK COMPLAINT"}
+                      {t("TRACK COMPLAINT")}
                     </TabsTrigger>
                     <TabsTrigger
                       value="chatbot"
                       className="gap-2 px-5 h-9.5 rounded-xl text-xs font-black transition-all duration-300 cursor-pointer data-[state=active]:bg-linear-to-r data-[state=active]:from-indigo-600/90 data-[state=active]:to-violet-600/90 data-[state=active]:text-white data-[state=active]:shadow-[0_0_20px_rgba(99,102,241,0.25)] hover:bg-[#111827]/60 text-gray-400 hover:text-gray-200"
                     >
                       <Bot className="w-4 h-4 shrink-0 text-cyan-400" />
-                      {isHi ? "AI चैटबॉट" : "AI CHATBOT"}
+                      {t("AI CHATBOT")}
                       <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
                     </TabsTrigger>
                   </TabsList>
@@ -1102,8 +1104,6 @@ export default function CitizenDashboard() {
             {/* New Complaint Tab */}
             <TabsContent value="new">
               <ComplaintForm 
-                language={language}
-                onLanguageChange={handleLanguageChange}
                 onComplaintCreated={refreshComplaints} 
                 onTrack={handleTrackComplaint}
               />

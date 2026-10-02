@@ -29,9 +29,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAuthSession, setAuthSession } from "@/lib/auth";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t, getText } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [hoveredRole, setHoveredRole] = useState<string | null>(null);
   
@@ -624,17 +626,17 @@ export default function LoginPage() {
                     JanMitra <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-purple-400 to-indigo-400">AI</span>
                   </h1>
                   <p className="text-xs md:text-sm font-bold uppercase tracking-[0.25em] text-slate-400">
-                    Autonomous Smart Governance Platform
+                    {getText("loginPlatform", "Autonomous Smart Governance Platform")}
                   </p>
                 </div>
                 
                 <p className="text-sm text-slate-400 font-medium max-w-lg leading-relaxed">
-                  Authorized access gateway for administrative authorities and department superintendents.
+                  {getText("loginGateway", "Authorized access gateway for administrative authorities and department superintendents.")}
                 </p>
 
                 <Badge variant="outline" className="gap-1.5 px-3 py-1 font-extrabold border-slate-800 bg-[#0b1329]/50 text-slate-300 rounded-full">
                   <Sparkles className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
-                  Government of Uttar Pradesh
+                  {t("Government of Uttar Pradesh")}
                 </Badge>
               </div>
 
@@ -713,11 +715,11 @@ export default function LoginPage() {
                                 {isActiveSession ? (
                                   <Badge className="text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 border-emerald-500/30 bg-emerald-500/10 text-emerald-400 animate-pulse gap-1 rounded-full w-fit">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                                    Active Session
+                                    {t("Active Session")}
                                   </Badge>
                                 ) : (
                                   <Badge variant="outline" className="text-[9px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 border-slate-800 bg-[#0e172a]/60 text-slate-400 rounded-full w-fit">
-                                    {role.badge}
+                                    {t(role.badge)}
                                   </Badge>
                                 )}
                                 
@@ -725,14 +727,14 @@ export default function LoginPage() {
                                   className="text-xl font-bold text-white transition-colors pt-1.5"
                                   style={{ color: isHovered ? role.color : "#ffffff" }}
                                 >
-                                  {role.title}
+                                  {role.id === "officer" ? getText("officerConsole", role.title) : getText("adminPanel", role.title)}
                                 </h3>
                                 <span className="text-xs text-slate-400 font-semibold block">
                                   {role.titleHi}
                                 </span>
                                 
                                 <p className="text-xs text-slate-400 leading-relaxed pt-2">
-                                  {role.description}
+                                  {t(role.description)}
                                 </p>
                               </div>
                             </div>
@@ -743,11 +745,11 @@ export default function LoginPage() {
                               style={{ color: isActiveSession ? "#10b981" : isHovered ? role.color : "#64748b" }}
                             >
                               <div className="flex flex-col">
-                                <span className="text-[9px] text-slate-500 font-medium tracking-wider">COMMAND NODE</span>
-                                <span className="text-xs text-slate-300 font-bold">{role.district}</span>
+                                <span className="text-[9px] text-slate-500 font-medium tracking-wider">{t("COMMAND NODE")}</span>
+                                <span className="text-xs text-slate-300 font-bold">{t(role.district)}</span>
                               </div>
                               <div className="flex items-center gap-1">
-                                <span>{isActiveSession ? "Resume Connection" : "Access Terminal"}</span>
+                                <span>{isActiveSession ? t("Resume Connection") : t("Access Terminal")}</span>
                                 <ArrowRight className={`w-3.5 h-3.5 ${isActiveSession ? "translate-x-0.5" : "group-hover:translate-x-1.5"} transition-transform`} />
                               </div>
                             </div>
@@ -767,7 +769,7 @@ export default function LoginPage() {
                 transition={{ delay: 0.5 }}
               >
                 <Lock className="w-3.5 h-3.5 text-blue-500 animate-pulse" />
-                <span>Authorized credentials mandatory. Terminal connections and biometric requests are securely archived.</span>
+                <span>{t("Authorized credentials mandatory. Terminal connections and biometric requests are securely archived.")}</span>
               </motion.div>
             </motion.div>
           ) : (
@@ -792,7 +794,7 @@ export default function LoginPage() {
                 className="group flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white mb-6 transition-colors bg-[#0b1329]/60 hover:bg-[#0b1329] border border-slate-800/40 hover:border-slate-800 px-4 py-2 rounded-full cursor-pointer shadow-md"
               >
                 <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
-                <span>Return to Role Gate</span>
+                <span>{getText("returnToRoleGate", "Return to Role Gate")}</span>
               </button>
 
               <motion.div
@@ -849,26 +851,26 @@ export default function LoginPage() {
                       </div>
                       <div className="space-y-0.5">
                         <h2 className="text-xl font-bold text-white flex items-center gap-1.5">
-                          {currentRoleConfig?.title} Authentication
+                            {currentRoleConfig?.id === "officer" ? getText("officerConsole", "Officer Console") : getText("adminPanel", "Admin Panel")} {t("Authentication")}
                         </h2>
                         <p className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest font-mono">
-                          {currentRoleConfig?.titleHi} • SECURE TERMINAL NODE
+                          {currentRoleConfig?.titleHi} • {t("SECURE TERMINAL NODE")}
                         </p>
                       </div>
                     </div>
 
                     <p className="text-xs text-slate-400 leading-relaxed border-b border-slate-900 pb-4 font-medium">
-                      Authenticate with pre-registered clearance keys or utilize the biometric scanning gate.
+                      {t("Authenticate with pre-registered clearance keys or utilize the biometric scanning gate.")}
                     </p>
 
                     {/* Quick Demo Pre-fill Box */}
                     <div className="bg-[#0b1329]/80 border border-slate-800/80 rounded-xl p-3.5 space-y-2">
                       <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-wider text-slate-300">
                         <Cpu className="w-3.5 h-3.5 text-blue-400" />
-                        <span>Prefilled System Credentials</span>
+                        <span>{t("Prefilled System Credentials")}</span>
                       </div>
                       <p className="text-[11px] text-slate-400 font-medium">
-                        Console coordinates are preloaded for quick demo simulation. You may also trigger biometric authentication bypass.
+                        {t("Console coordinates are preloaded for quick demo simulation. You may also trigger biometric authentication bypass.")}
                       </p>
                     </div>
 
@@ -879,7 +881,7 @@ export default function LoginPage() {
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                           <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest pl-2">
-                            Official Email ID / Node Identifier
+                            {getText("officialEmail", "Official Email ID / Node Identifier")}
                           </label>
                           {emailFocused && (
                             <motion.span 
@@ -888,7 +890,7 @@ export default function LoginPage() {
                               className="text-[9px] font-mono font-bold uppercase tracking-wider"
                               style={{ color: theme.solid }}
                             >
-                              Scanning port...
+                              {t("Scanning port...")}
                             </motion.span>
                           )}
                         </div>
@@ -923,7 +925,7 @@ export default function LoginPage() {
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                           <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest pl-2">
-                            Security Passkey / Code
+                            {getText("securityPasskey", "Security Passkey / Code")}
                           </label>
                           {passwordFocused && (
                             <motion.span 
@@ -932,7 +934,7 @@ export default function LoginPage() {
                               className="text-[9px] font-mono font-bold uppercase tracking-wider"
                               style={{ color: theme.solid }}
                             >
-                              Verifying port...
+                              {t("Verifying port...")}
                             </motion.span>
                           )}
                         </div>
@@ -976,7 +978,7 @@ export default function LoginPage() {
                         <div className="bg-[#030712] border border-slate-900 rounded-xl p-3.5 space-y-1 font-mono text-[9px] text-cyan-400 overflow-hidden shadow-inner max-h-[140px] overflow-y-auto">
                           <div className="flex items-center gap-1.5 border-b border-slate-900 pb-1.5 mb-1.5 text-slate-400 font-bold">
                             <Terminal className="w-3.5 h-3.5 text-cyan-500 animate-pulse" />
-                            <span>SECURITY CORE TELEMETRY LOGS</span>
+                            <span>{t("SECURITY CORE TELEMETRY LOGS")}</span>
                           </div>
                           {terminalLogs.map((log, index) => (
                             <motion.div 
@@ -1000,7 +1002,7 @@ export default function LoginPage() {
                           animate={{ opacity: 1, y: 0 }}
                         >
                           <AlertCircle className="w-4.5 h-4.5 text-rose-500 shrink-0 mt-0.5" />
-                          <span>{error}</span>
+                          <span>{t(error)}</span>
                         </motion.div>
                       )}
 
@@ -1029,8 +1031,8 @@ export default function LoginPage() {
                             <Fingerprint className={`w-4.5 h-4.5 ${biometricScanning ? "text-cyan-400 animate-pulse" : "text-slate-400"}`} />
                             <span>
                               {biometricScanning 
-                                ? "Analyzing Retina ID..." 
-                                : "Tap to scan Biometrics (retinal/fingerprint)"}
+                                ? t("Analyzing Retina ID...")
+                                : t("Tap to scan Biometrics (retinal/fingerprint)")}
                             </span>
                           </Button>
                         </div>
@@ -1050,17 +1052,17 @@ export default function LoginPage() {
                           {loading ? (
                             <>
                               <Loader2 className="w-4.5 h-4.5 animate-spin" />
-                              <span>Resolving Handshake Keys...</span>
+                              <span>{t("Resolving Handshake Keys...")}</span>
                             </>
                           ) : success ? (
                             <>
                               <CheckCircle className="w-4.5 h-4.5 text-white animate-bounce" />
-                              <span>Command Credentials Cleared</span>
+                              <span>{t("Command Credentials Cleared")}</span>
                             </>
                           ) : (
                             <>
                               <Lock className="w-4 h-4 text-white" />
-                              <span>Authorize & Launch Console</span>
+                              <span>{getText("authorizeConsole", "Authorize & Launch Console")}</span>
                             </>
                           )}
                         </Button>
